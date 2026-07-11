@@ -13,26 +13,6 @@ export default function AdminLayout() {
 
   return (
     <div className="min-h-screen bg-warm-cream flex flex-col md:flex-row">
-      {/* Toast Feedbacks */}
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          style: {
-            background: "#5C4033",
-            color: "#FAF6F0",
-            fontFamily: "Inter, sans-serif",
-            fontSize: "14px",
-            borderRadius: "8px",
-          },
-          success: {
-            iconTheme: {
-              primary: "#B7C4A0",
-              secondary: "#5C4033",
-            },
-          },
-        }}
-      />
-
       {/* Admin Sidebar */}
       <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 

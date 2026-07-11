@@ -313,7 +313,7 @@ export default function Home() {
             Contact Naomi & Ivan directly on WhatsApp. Let us build furniture
             tailored exactly to your dimensions and home aesthetic.
           </p>
-          <div className="pt-2">
+          <div className="pt-2 relative z-10">
             <Button
               variant="whatsapp"
               size="lg"

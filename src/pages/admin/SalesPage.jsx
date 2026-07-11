@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { salesApi } from '../../api/salesApi';
-import Loader from '../../components/common/Loader';
-import EmptyState from '../../components/common/EmptyState';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { HiSearch, HiOutlineDocumentReport, HiOutlineCash } from 'react-icons/hi';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import { salesApi } from "../../api/salesApi";
+import Loader from "../../components/common/Loader";
+import EmptyState from "../../components/common/EmptyState";
+import { formatCurrency } from "../../utils/formatCurrency";
+import {
+  HiSearch,
+  HiOutlineDocumentReport,
+  HiOutlineCash,
+} from "react-icons/hi";
+import toast from "react-hot-toast";
 
 export default function SalesPage() {
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchSales = async () => {
@@ -17,7 +21,7 @@ export default function SalesPage() {
         const data = await salesApi.getAllSales();
         setSales(data);
       } catch (err) {
-        toast.error('Failed to load sales transaction logs.');
+        toast.error("Failed to load sales transaction logs.");
         console.error(err);
       } finally {
         setLoading(false);
@@ -26,36 +30,51 @@ export default function SalesPage() {
     fetchSales();
   }, []);
 
-  // Filter list
+  // GET /sales does NOT populate the `product` ref (Sale.find().sort(...) with no
+  // .populate() call in saleController.js), so sale.product is just a raw ObjectId
+  // string. The schema exists specifically for this: productName is a snapshot
+  // string saved at the moment the sale was created, so it's always correct even
+  // if the product is later renamed or archived. Always read productName, never
+  // try to reach into sale.product for display data.
   const filteredSales = sales.filter((sale) => {
     const matchesSearch =
       sale.customerName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       sale.customerPhone.includes(searchQuery) ||
-      (sale.saleNumber && sale.saleNumber.toString().includes(searchQuery)) ||
-      (sale.productId?.name && sale.productId.name.toLowerCase().includes(searchQuery.toLowerCase()));
+      (sale.productName || "")
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
     return matchesSearch;
   });
 
-  // Calculate accumulated totals
-  const totalRevenue = filteredSales.reduce((acc, sale) => acc + (sale.negotiatedPrice || 0), 0);
+  // totalAmount is the schema's own pre-computed field (quantity * agreedPrice
+  // at time of sale) — use it directly rather than recomputing.
+  const totalRevenue = filteredSales.reduce(
+    (acc, sale) => acc + (sale.totalAmount || 0),
+    0,
+  );
 
   return (
     <div className="space-y-8">
-      
       {/* Page Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-walnut-brown leading-tight">
           Sales Audit Logs
         </h1>
-        <p className="text-xs text-charcoal-text/50 font-medium">Immutable snapshots created automatically when orders are delivered.</p>
+        <p className="text-xs text-charcoal-text/50 font-medium">
+          Immutable snapshots created automatically when orders are delivered.
+        </p>
       </div>
 
       {/* Top summary counter */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="bg-white p-5 rounded-2xl border border-walnut-brown/10 shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-bold text-charcoal-text/50 uppercase tracking-wider block">Delivered Transactions</span>
-            <span className="text-xl font-extrabold text-walnut-brown">{filteredSales.length} Completed Sales</span>
+            <span className="text-[10px] font-bold text-charcoal-text/50 uppercase tracking-wider block">
+              Delivered Transactions
+            </span>
+            <span className="text-xl font-extrabold text-walnut-brown">
+              {filteredSales.length} Completed Sales
+            </span>
           </div>
           <div className="p-3 bg-walnut-brown/5 rounded-xl text-walnut-brown">
             <HiOutlineDocumentReport size={22} />
@@ -64,8 +83,12 @@ export default function SalesPage() {
 
         <div className="bg-walnut-brown text-warm-cream p-5 rounded-2xl border border-walnut-brown shadow-xs flex items-center justify-between">
           <div>
-            <span className="text-[10px] font-bold text-warm-cream/70 uppercase tracking-wider block">Sum of Filtered Sales</span>
-            <span className="text-xl font-extrabold text-white">{formatCurrency(totalRevenue)}</span>
+            <span className="text-[10px] font-bold text-warm-cream/70 uppercase tracking-wider block">
+              Sum of Filtered Sales
+            </span>
+            <span className="text-xl font-extrabold text-white">
+              {formatCurrency(totalRevenue)}
+            </span>
           </div>
           <div className="p-3 bg-white/10 text-white rounded-xl">
             <HiOutlineCash size={22} />
@@ -81,7 +104,7 @@ export default function SalesPage() {
           </span>
           <input
             type="text"
-            placeholder="Search client, phone, cot name..."
+            placeholder="Search client, phone, product name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9 pr-4 py-2 border border-walnut-brown/15 bg-warm-cream/20 text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-walnut-brown/20 focus:border-walnut-brown w-full"
@@ -100,38 +123,55 @@ export default function SalesPage() {
                 <tr>
                   <th className="px-6 py-4">Sale Ref</th>
                   <th className="px-6 py-4">Customer Details</th>
-                  <th className="px-6 py-4">Purchased Product</th>
-                  <th className="px-6 py-4">Amount Audited</th>
-                  <th className="px-6 py-4">Delivery Completed On</th>
+                  <th className="px-6 py-4">Product</th>
+                  <th className="px-6 py-4">Qty</th>
+                  <th className="px-6 py-4">Agreed Price</th>
+                  <th className="px-6 py-4">Total Amount</th>
+                  <th className="px-6 py-4">Sale Date</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-walnut-brown/5 text-sm text-charcoal-text">
                 {filteredSales.map((sale) => {
-                  const formattedDate = new Date(sale.createdAt).toLocaleDateString('en-KE', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
+                  // saleDate is the semantically correct field (set explicitly when
+                  // the sale record is created), preferred over createdAt.
+                  const formattedDate = new Date(
+                    sale.saleDate || sale.createdAt,
+                  ).toLocaleDateString("en-KE", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
                   });
 
                   return (
-                    <tr key={sale._id} className="hover:bg-walnut-brown/2 transition-colors">
+                    <tr
+                      key={sale._id}
+                      className="hover:bg-walnut-brown/2 transition-colors"
+                    >
                       <td className="px-6 py-4 font-bold text-walnut-brown">
-                        #{sale.saleNumber || sale._id.substring(18)}
+                        #{sale._id.slice(-6).toUpperCase()}
                       </td>
                       <td className="px-6 py-4">
-                        <div className="font-semibold text-charcoal-text">{sale.customerName}</div>
-                        <div className="text-xs text-charcoal-text/50 font-medium">{sale.customerPhone}</div>
+                        <div className="font-semibold text-charcoal-text">
+                          {sale.customerName}
+                        </div>
+                        <div className="text-xs text-charcoal-text/50 font-medium">
+                          {sale.customerPhone}
+                        </div>
                       </td>
                       <td className="px-6 py-4 font-medium">
-                        {sale.productId?.name || 'Handmade Furniture'}
+                        {sale.productName}
                         <span className="text-[10px] font-bold text-charcoal-text/40 block mt-0.5">
-                          {sale.productId?.category || 'Custom Order'}
+                          {sale.orderType}
                         </span>
                       </td>
+                      <td className="px-6 py-4 font-medium text-charcoal-text/70">
+                        {sale.quantity}
+                      </td>
+                      <td className="px-6 py-4 font-medium text-charcoal-text/70">
+                        {formatCurrency(sale.agreedPrice)}
+                      </td>
                       <td className="px-6 py-4 font-extrabold text-walnut-brown">
-                        {formatCurrency(sale.negotiatedPrice)}
+                        {formatCurrency(sale.totalAmount)}
                       </td>
                       <td className="px-6 py-4 text-charcoal-text/60 font-medium">
                         {formattedDate}
@@ -149,7 +189,6 @@ export default function SalesPage() {
           description="Sales are logged automatically when order statuses move to 'Delivered'."
         />
       )}
-
     </div>
   );
 }
