@@ -17,7 +17,7 @@ export default function PublicLayout() {
     <div className="min-h-screen bg-warm-cream flex flex-col justify-between selection:bg-soft-sage/30">
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="grow">
         <Outlet />
       </main>
 

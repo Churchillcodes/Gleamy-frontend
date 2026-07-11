@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { FaWhatsapp, FaArrowLeft, FaRulerCombined, FaPalette, FaTruck } from 'react-icons/fa';
-import { productApi } from '../../api/productApi';
-import ProductGallery from '../../components/product/ProductGallery';
-import ProductCard from '../../components/product/ProductCard';
-import Loader from '../../components/common/Loader';
-import Badge from '../../components/common/Badge';
-import Button from '../../components/common/Button';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { getProductInquiryLink } from '../../utils/whatsappLink';
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import {
+  FaWhatsapp,
+  FaArrowLeft,
+  FaRulerCombined,
+  FaPalette,
+  FaTruck,
+} from "react-icons/fa";
+import { productApi } from "../../api/productApi";
+import ProductGallery from "../../components/product/ProductGallery";
+import ProductCard from "../../components/product/ProductCard";
+import Loader from "../../components/common/Loader";
+import Badge from "../../components/common/Badge";
+import Button from "../../components/common/Button";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { getProductInquiryLink } from "../../utils/whatsappLink";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -28,11 +34,11 @@ export default function ProductDetails() {
         // Fetch all products to get related items in same category
         const allProducts = await productApi.getAllProducts();
         const related = allProducts.filter(
-          (p) => p.category === prod.category && p._id !== prod._id
+          (p) => p.category === prod.category && p._id !== prod._id,
         );
         setRelatedProducts(related.slice(0, 3)); // Limit to 3 items
       } catch (err) {
-        console.error('Error fetching product details:', err);
+        console.error("Error fetching product details:", err);
         setError(true);
       } finally {
         setLoading(false);
@@ -53,13 +59,25 @@ export default function ProductDetails() {
     return (
       <div className="max-w-md mx-auto px-4 py-20 text-center space-y-6">
         <div className="text-red-500 bg-red-50 p-4 rounded-full inline-flex border border-red-200">
-          <svg className="w-12 h-12 stroke-current" fill="none" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <svg
+            className="w-12 h-12 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+            />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-walnut-brown">Product Not Found</h2>
+        <h2 className="text-2xl font-bold text-walnut-brown">
+          Product Not Found
+        </h2>
         <p className="text-charcoal-text/70 text-sm">
-          The product you are looking for may have been archived or does not exist.
+          The product you are looking for may have been archived or does not
+          exist.
         </p>
         <Link to="/catalogue">
           <Button variant="outline" size="sm" icon={FaArrowLeft}>
@@ -94,11 +112,10 @@ export default function ProductDetails() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-      
       {/* Back button */}
       <div>
-        <Link 
-          to="/catalogue" 
+        <Link
+          to="/catalogue"
           className="inline-flex items-center gap-2 text-xs font-bold text-walnut-brown uppercase tracking-wider hover:opacity-75 transition-opacity"
         >
           <FaArrowLeft /> Back to Catalogue
@@ -107,7 +124,6 @@ export default function ProductDetails() {
 
       {/* Main product columns */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
-        
         {/* Left Column: Image Gallery */}
         <ProductGallery images={images} productName={name} />
 
@@ -119,7 +135,7 @@ export default function ProductDetails() {
               <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-walnut-brown text-warm-cream">
                 {category}
               </span>
-              
+
               {isMadeToOrder && (
                 <Badge variant="sage" size="sm">
                   Made to Order
@@ -160,7 +176,9 @@ export default function ProductDetails() {
 
           {/* Description */}
           <div className="space-y-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-walnut-brown">Description</h3>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-walnut-brown">
+              Description
+            </h3>
             <p className="text-charcoal-text/80 text-sm sm:text-base leading-relaxed whitespace-pre-line">
               {description}
             </p>
@@ -168,18 +186,18 @@ export default function ProductDetails() {
 
           {/* Product Specifications (Dimensions & Colors) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
-            
             {/* Dimensions */}
             <div className="space-y-2 bg-walnut-brown/5 p-4 rounded-xl border border-walnut-brown/5">
               <span className="text-[10px] font-bold uppercase tracking-wider text-walnut-brown/65 flex items-center gap-1.5">
                 <FaRulerCombined /> Dimensions (L &times; W &times; H)
               </span>
               <p className="text-xs sm:text-sm font-semibold text-charcoal-text mt-1">
-                {dimensions && dimensions.length && dimensions.width && dimensions.height ? (
-                  `${dimensions.length}cm × ${dimensions.width}cm × ${dimensions.height}cm`
-                ) : (
-                  'Custom sizes available upon request'
-                )}
+                {dimensions &&
+                dimensions.length &&
+                dimensions.width &&
+                dimensions.height
+                  ? `${dimensions.length}cm × ${dimensions.width}cm × ${dimensions.height}cm`
+                  : "Custom sizes available upon request"}
               </p>
             </div>
 
@@ -189,20 +207,20 @@ export default function ProductDetails() {
                 <FaPalette /> Color Finishes
               </span>
               <p className="text-xs sm:text-sm font-semibold text-charcoal-text mt-1">
-                {colors && colors.length > 0 ? (
-                  colors.join(', ')
-                ) : (
-                  'White, Natural Pine, Mahogany, Sage Grey'
-                )}
+                {colors && colors.length > 0
+                  ? colors.join(", ")
+                  : "White, Natural Pine, Mahogany, Sage Grey"}
               </p>
             </div>
-
           </div>
 
           {/* Trust Banner inside layout */}
           <div className="flex items-center gap-3 p-4 rounded-xl bg-soft-sage/10 text-walnut-brown border border-soft-sage/35 text-xs font-medium leading-relaxed">
-            <FaTruck size={20} className="flex-shrink-0 text-walnut-brown/60" />
-            <span>Delivering across Nairobi & wider Kenya. We provide professional home assembly on arrival!</span>
+            <FaTruck size={20} className="shrink-0 text-walnut-brown/60" />
+            <span>
+              Delivering across Nairobi & wider Kenya. We provide professional
+              home assembly on arrival!
+            </span>
           </div>
 
           {/* WhatsApp CTA Action */}
@@ -230,14 +248,15 @@ export default function ProductDetails() {
               Clicking open will deep-link directly to Ivan & Naomi
             </p>
           </div>
-
         </div>
       </div>
 
       {/* Related Products */}
       {relatedProducts.length > 0 && (
         <section className="space-y-6 pt-12 border-t border-walnut-brown/10">
-          <h2 className="text-2xl font-extrabold text-walnut-brown">Related Creations</h2>
+          <h2 className="text-2xl font-extrabold text-walnut-brown">
+            Related Creations
+          </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {relatedProducts.map((p) => (
               <ProductCard key={p._id} product={p} />
@@ -245,7 +264,6 @@ export default function ProductDetails() {
           </div>
         </section>
       )}
-
     </div>
   );
 }

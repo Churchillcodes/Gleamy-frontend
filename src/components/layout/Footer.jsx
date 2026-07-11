@@ -85,7 +85,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5 text-sm text-warm-cream/80">
               <li className="flex items-start gap-2.5">
-                <FaMapMarkerAlt className="mt-1 flex-shrink-0 text-soft-sage" />
+                <FaMapMarkerAlt className="mt-1 shrink-0 text-soft-sage" />
                 <span>
                   Showroom & Workshop,
                   <br />
@@ -93,7 +93,7 @@ export default function Footer() {
                 </span>
               </li>
               <li className="flex items-center gap-2.5">
-                <FaPhoneAlt className="flex-shrink-0 text-soft-sage" />
+                <FaPhoneAlt className="shrink-0 text-soft-sage" />
                 <a
                   href="tel:+254719246761"
                   className="hover:text-white transition-colors"
@@ -102,7 +102,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <FaEnvelope className="flex-shrink-0 text-soft-sage" />
+                <FaEnvelope className="shrink-0 text-soft-sage" />
                 <a
                   href="mailto:info@gleamyfurniture.co.ke"
                   className="hover:text-white transition-colors"
@@ -111,7 +111,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
-                <FaWhatsapp className="flex-shrink-0 text-whatsapp-green" />
+                <FaWhatsapp className="shrink-0 text-whatsapp-green" />
                 <a
                   href={`https://wa.me/${DEFAULT_WHATSAPP_NUMBER}`}
                   target="_blank"

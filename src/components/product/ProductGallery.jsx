@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { HiArrowLeft, HiArrowRight, HiX } from 'react-icons/hi';
+import React, { useState } from "react";
+import { HiArrowLeft, HiArrowRight, HiX } from "react-icons/hi";
 
 export default function ProductGallery({ images = [], productName }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -7,11 +7,22 @@ export default function ProductGallery({ images = [], productName }) {
 
   if (images.length === 0) {
     return (
-      <div className="w-full aspect-[4/3] rounded-2xl bg-walnut-brown/5 flex flex-col items-center justify-center text-walnut-brown/30">
-        <svg className="w-16 h-16 stroke-current" fill="none" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      <div className="w-full aspect-4/3 rounded-2xl bg-walnut-brown/5 flex flex-col items-center justify-center text-walnut-brown/30">
+        <svg
+          className="w-16 h-16 stroke-current"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          />
         </svg>
-        <span className="text-sm font-semibold uppercase tracking-wider mt-2">No Images Available</span>
+        <span className="text-sm font-semibold uppercase tracking-wider mt-2">
+          No Images Available
+        </span>
       </div>
     );
   }
@@ -31,16 +42,16 @@ export default function ProductGallery({ images = [], productName }) {
   return (
     <div className="space-y-4">
       {/* Main Preview Container */}
-      <div 
+      <div
         onClick={() => setLightboxOpen(true)}
-        className="relative aspect-[4/3] rounded-2xl bg-walnut-brown/5 overflow-hidden border border-walnut-brown/10 cursor-zoom-in shadow-xs group"
+        className="relative aspect-4/3 rounded-2xl bg-walnut-brown/5 overflow-hidden border border-walnut-brown/10 cursor-zoom-in shadow-xs group"
       >
         <img
           src={activeImage.url}
           alt={`${productName} - Preview`}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-101"
         />
-        
+
         {images.length > 1 && (
           <>
             <button
@@ -68,10 +79,10 @@ export default function ProductGallery({ images = [], productName }) {
             <button
               key={img.publicId || idx}
               onClick={() => setActiveIndex(idx)}
-              className={`relative w-20 aspect-square rounded-xl overflow-hidden bg-walnut-brown/5 border-2 transition-all flex-shrink-0 cursor-pointer ${
+              className={`relative w-20 aspect-square rounded-xl overflow-hidden bg-walnut-brown/5 border-2 transition-all shrink-0 cursor-pointer ${
                 idx === activeIndex
-                  ? 'border-walnut-brown ring-2 ring-walnut-brown/15 scale-95'
-                  : 'border-transparent hover:border-walnut-brown/30'
+                  ? "border-walnut-brown ring-2 ring-walnut-brown/15 scale-95"
+                  : "border-transparent hover:border-walnut-brown/30"
               }`}
             >
               <img
@@ -102,7 +113,7 @@ export default function ProductGallery({ images = [], productName }) {
           </div>
 
           {/* Large display center row */}
-          <div className="flex-grow flex items-center justify-between w-full max-w-7xl gap-4">
+          <div className="grow flex items-center justify-between w-full max-w-7xl gap-4">
             {images.length > 1 ? (
               <button
                 onClick={handlePrev}
@@ -111,7 +122,9 @@ export default function ProductGallery({ images = [], productName }) {
               >
                 <HiArrowLeft size={24} />
               </button>
-            ) : <div className="w-12" />}
+            ) : (
+              <div className="w-12" />
+            )}
 
             <div className="max-h-[80vh] max-w-4xl flex items-center justify-center">
               <img
@@ -129,7 +142,9 @@ export default function ProductGallery({ images = [], productName }) {
               >
                 <HiArrowRight size={24} />
               </button>
-            ) : <div className="w-12" />}
+            ) : (
+              <div className="w-12" />
+            )}
           </div>
 
           {/* Bottom helper */}

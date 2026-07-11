@@ -130,7 +130,7 @@ export default function Contact() {
                 const Icon = det.icon;
                 return (
                   <div key={idx} className="flex gap-4">
-                    <div className="p-3 rounded-xl bg-walnut-brown/5 text-walnut-brown flex-shrink-0 h-11 w-11 flex items-center justify-center">
+                    <div className="p-3 rounded-xl bg-walnut-brown/5 text-walnut-brown shrink-0 h-11 w-11 flex items-center justify-center">
                       <Icon size={18} />
                     </div>
                     <div>

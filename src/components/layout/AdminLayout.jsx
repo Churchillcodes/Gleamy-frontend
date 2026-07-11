@@ -17,7 +17,7 @@ export default function AdminLayout() {
       <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Page Space */}
-      <div className="flex-grow flex flex-col md:pl-64 min-h-screen">
+      <div className="grow flex flex-col md:pl-64 min-h-screen">
         {/* Mobile Header Bar */}
         <header className="bg-warm-cream border-b border-walnut-brown/10 px-4 py-4 flex items-center justify-between md:hidden sticky top-0 z-30">
           <button
@@ -39,7 +39,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Admin Content Area */}
-        <main className="flex-grow p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main className="grow p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
           <Outlet />
         </main>
       </div>

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaWhatsapp, FaEye } from 'react-icons/fa';
-import Badge from '../common/Badge';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { getProductInquiryLink } from '../../utils/whatsappLink';
+import React from "react";
+import { Link } from "react-router-dom";
+import { FaWhatsapp, FaEye } from "react-icons/fa";
+import Badge from "../common/Badge";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { getProductInquiryLink } from "../../utils/whatsappLink";
 
 export default function ProductCard({ product }) {
   const {
@@ -29,9 +29,11 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="group bg-white rounded-2xl border border-walnut-brown/10 overflow-hidden shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
-      
       {/* Product Image Panel */}
-      <Link to={`/products/${_id}`} className="block relative aspect-[4/3] bg-walnut-brown/5 overflow-hidden">
+      <Link
+        to={`/products/${_id}`}
+        className="block relative aspect-4/3 bg-walnut-brown/5 overflow-hidden"
+      >
         {imageUrl ? (
           <img
             src={imageUrl}
@@ -41,10 +43,21 @@ export default function ProductCard({ product }) {
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-walnut-brown/30 p-4">
-            <svg className="w-12 h-12 stroke-current" fill="none" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            <svg
+              className="w-12 h-12 stroke-current"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
             </svg>
-            <span className="text-xs font-semibold uppercase tracking-wider mt-2">No Image Available</span>
+            <span className="text-xs font-semibold uppercase tracking-wider mt-2">
+              No Image Available
+            </span>
           </div>
         )}
 
@@ -53,7 +66,7 @@ export default function ProductCard({ product }) {
           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-walnut-brown text-warm-cream">
             {category}
           </span>
-          
+
           {isMadeToOrder && (
             <Badge variant="sage" size="sm">
               Made to Order
@@ -75,7 +88,7 @@ export default function ProductCard({ product }) {
       </Link>
 
       {/* Details Box */}
-      <div className="p-5 flex-grow flex flex-col justify-between">
+      <div className="p-5 grow flex flex-col justify-between">
         <div className="space-y-1.5">
           <Link to={`/products/${_id}`} className="block">
             <h3 className="font-heading text-base font-bold text-walnut-brown line-clamp-1 group-hover:text-walnut-brown/85 transition-colors">
@@ -129,7 +142,6 @@ export default function ProductCard({ product }) {
           )}
         </div>
       </div>
-
     </div>
   );
 }
