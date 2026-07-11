@@ -1,23 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { productApi } from '../../api/productApi';
-import { CATEGORIES } from '../../utils/constants';
-import Button from '../../components/common/Button';
-import Input from '../../components/common/Input';
-import Modal from '../../components/common/Modal';
-import Badge from '../../components/common/Badge';
-import ImageUploader from '../../components/product/ImageUploader';
-import Loader from '../../components/common/Loader';
-import EmptyState from '../../components/common/EmptyState';
-import { formatCurrency } from '../../utils/formatCurrency';
-import { HiPlus, HiSearch, HiTrash, HiRefresh, HiPlusCircle, HiMinusCircle, HiArchive, HiPencil } from 'react-icons/hi';
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import { productApi } from "../../api/productApi";
+import { CATEGORIES } from "../../utils/constants";
+import Button from "../../components/common/Button";
+import Input from "../../components/common/Input";
+import Modal from "../../components/common/Modal";
+import Badge from "../../components/common/Badge";
+import ImageUploader from "../../components/product/ImageUploader";
+import Loader from "../../components/common/Loader";
+import EmptyState from "../../components/common/EmptyState";
+import { formatCurrency } from "../../utils/formatCurrency";
+import {
+  HiPlus,
+  HiSearch,
+  HiTrash,
+  HiRefresh,
+  HiPlusCircle,
+  HiMinusCircle,
+  HiArchive,
+  HiPencil,
+} from "react-icons/hi";
+import toast from "react-hot-toast";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   // Modal State
   const [formOpen, setFormOpen] = useState(false);
@@ -26,17 +35,17 @@ export default function ProductsPage() {
 
   // Form Fields
   const [formData, setFormData] = useState({
-    name: '',
+    name: "",
     category: CATEGORIES[0],
-    description: '',
-    listedPrice: '',
+    description: "",
+    listedPrice: "",
     negotiable: true,
     quantity: 0,
     isMadeToOrder: true,
-    length: '',
-    width: '',
-    height: '',
-    colorsInput: '',
+    length: "",
+    width: "",
+    height: "",
+    colorsInput: "",
   });
 
   const [formErrors, setFormErrors] = useState({});
@@ -49,10 +58,13 @@ export default function ProductsPage() {
         data = await productApi.getArchivedProducts();
       } else {
         data = await productApi.getAllProducts();
+        const lowStock = await productApi.getLowStockProducts();
+
+        console.log("Low stock products:", lowStock);
       }
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
-      toast.error('Failed to load products list.');
+      toast.error("Failed to load products list.");
       console.error(err);
     } finally {
       setLoading(false);
@@ -68,7 +80,7 @@ export default function ProductsPage() {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: null }));
@@ -78,17 +90,17 @@ export default function ProductsPage() {
   const handleOpenCreateModal = () => {
     setEditingProduct(null);
     setFormData({
-      name: '',
+      name: "",
       category: CATEGORIES[0],
-      description: '',
-      listedPrice: '',
+      description: "",
+      listedPrice: "",
       negotiable: true,
       quantity: 0,
       isMadeToOrder: true,
-      length: '',
-      width: '',
-      height: '',
-      colorsInput: '',
+      length: "",
+      width: "",
+      height: "",
+      colorsInput: "",
     });
     setFormErrors({});
     setFormOpen(true);
@@ -104,10 +116,10 @@ export default function ProductsPage() {
       negotiable: product.negotiable ?? true,
       quantity: product.quantity ?? 0,
       isMadeToOrder: product.isMadeToOrder ?? true,
-      length: product.dimensions?.length ?? '',
-      width: product.dimensions?.width ?? '',
-      height: product.dimensions?.height ?? '',
-      colorsInput: product.colors ? product.colors.join(', ') : '',
+      length: product.dimensions?.length ?? "",
+      width: product.dimensions?.width ?? "",
+      height: product.dimensions?.height ?? "",
+      colorsInput: product.colors ? product.colors.join(", ") : "",
     });
     setFormErrors({});
     setFormOpen(true);
@@ -126,44 +138,60 @@ export default function ProductsPage() {
         toast.success(`Stock reduced.`);
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Insufficent stock or adjustment failed.');
+      toast.error(
+        err.response?.data?.message ||
+          "Insufficent stock or adjustment failed.",
+      );
     }
   };
 
   // Archive / Soft Delete
   const handleArchive = async (id) => {
-    if (!confirm('Are you sure you want to ARCHIVE this product? It will not appear on the shopfront.')) return;
+    if (
+      !confirm(
+        "Are you sure you want to ARCHIVE this product? It will not appear on the shopfront.",
+      )
+    )
+      return;
     try {
       await productApi.archiveProduct(id);
-      toast.success('Product archived.');
+      toast.success("Product archived.");
       loadProducts();
     } catch (err) {
-      toast.error('Failed to archive product.');
+      toast.error("Failed to archive product.");
     }
   };
 
   const handleRestore = async (id) => {
     try {
       await productApi.restoreProduct(id);
-      toast.success('Product restored to active catalog.');
+      toast.success("Product restored to active catalog.");
       loadProducts();
     } catch (err) {
-      toast.error('Failed to restore product.');
+      toast.error("Failed to restore product.");
     }
   };
 
   // Form Validation
   const validateForm = () => {
     const errs = {};
-    if (!formData.name.trim() || formData.name.length < 3 || formData.name.length > 100) {
-      errs.name = 'Name must be between 3 and 100 characters.';
+    if (
+      !formData.name.trim() ||
+      formData.name.length < 3 ||
+      formData.name.length > 100
+    ) {
+      errs.name = "Name must be between 3 and 100 characters.";
     }
-    if (!formData.description.trim() || formData.description.length < 10 || formData.description.length > 1000) {
-      errs.description = 'Description must be between 10 and 1000 characters.';
+    if (
+      !formData.description.trim() ||
+      formData.description.length < 10 ||
+      formData.description.length > 1000
+    ) {
+      errs.description = "Description must be between 10 and 1000 characters.";
     }
     const priceNum = Number(formData.listedPrice);
     if (!formData.listedPrice || isNaN(priceNum) || priceNum <= 0) {
-      errs.listedPrice = 'Listed price must be a number greater than 0.';
+      errs.listedPrice = "Listed price must be a number greater than 0.";
     }
 
     setFormErrors(errs);
@@ -175,11 +203,14 @@ export default function ProductsPage() {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    const loadId = toast.loading('Saving product...');
+    const loadId = toast.loading("Saving product...");
 
     // Format colors and dimensions
     const colors = formData.colorsInput
-      ? formData.colorsInput.split(',').map((c) => c.trim()).filter(Boolean)
+      ? formData.colorsInput
+          .split(",")
+          .map((c) => c.trim())
+          .filter(Boolean)
       : [];
 
     const dimensions = {
@@ -202,13 +233,18 @@ export default function ProductsPage() {
 
     try {
       if (editingProduct) {
-        const updated = await productApi.updateProduct(editingProduct._id, payload);
-        toast.success('Product updated successfully!', { id: loadId });
+        const updated = await productApi.updateProduct(
+          editingProduct._id,
+          payload,
+        );
+        toast.success("Product updated successfully!", { id: loadId });
         setFormOpen(false);
         loadProducts();
       } else {
         const created = await productApi.createProduct(payload);
-        toast.success('Product created! Keep editing to upload images.', { id: loadId });
+        toast.success("Product created! Keep editing to upload images.", {
+          id: loadId,
+        });
         // Automatically switch to editing mode for image uploads!
         setEditingProduct(created);
         setFormData((prev) => ({
@@ -218,7 +254,8 @@ export default function ProductsPage() {
         loadProducts();
       }
     } catch (err) {
-      const msg = err.response?.data?.message || 'Failed to save product draft.';
+      const msg =
+        err.response?.data?.message || "Failed to save product draft.";
       toast.error(msg, { id: loadId });
     } finally {
       setIsSubmitting(false);
@@ -231,27 +268,33 @@ export default function ProductsPage() {
     loadProducts();
   };
 
-  // Client-side search filters
+  const query = searchQuery.toLowerCase();
+
   const filteredProducts = products.filter((p) => {
     const matchesSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory ? p.category === selectedCategory : true;
+      (p.name?.toLowerCase() || "").includes(query) ||
+      (p.description?.toLowerCase() || "").includes(query);
+
+    const matchesCategory = selectedCategory
+      ? p.category === selectedCategory
+      : true;
+
     return matchesSearch && matchesCategory;
   });
 
   return (
     <div className="space-y-8">
-      
       {/* Header section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-walnut-brown leading-tight">
             Manage Products
           </h1>
-          <p className="text-xs text-charcoal-text/50 font-medium">Add, update, and manage baby cots, wardrobes, and living room cots.</p>
+          <p className="text-xs text-charcoal-text/50 font-medium">
+            Add, update, and manage baby cots, wardrobes, and living room cots.
+          </p>
         </div>
-        
+
         <Button onClick={handleOpenCreateModal} icon={HiPlus}>
           Add New Product
         </Button>
@@ -259,7 +302,6 @@ export default function ProductsPage() {
 
       {/* Control panel bar */}
       <div className="bg-white p-4 rounded-2xl border border-walnut-brown/10 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between">
-        
         {/* Search & Category selectors */}
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <div className="relative">
@@ -295,8 +337,8 @@ export default function ProductsPage() {
             onClick={() => setShowArchived(false)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
               !showArchived
-                ? 'bg-walnut-brown text-warm-cream shadow-sm'
-                : 'text-charcoal-text/60 hover:bg-walnut-brown/5'
+                ? "bg-walnut-brown text-warm-cream shadow-sm"
+                : "text-charcoal-text/60 hover:bg-walnut-brown/5"
             }`}
           >
             Active Catalog
@@ -305,14 +347,13 @@ export default function ProductsPage() {
             onClick={() => setShowArchived(true)}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
               showArchived
-                ? 'bg-walnut-brown text-warm-cream shadow-sm'
-                : 'text-charcoal-text/60 hover:bg-walnut-brown/5'
+                ? "bg-walnut-brown text-warm-cream shadow-sm"
+                : "text-charcoal-text/60 hover:bg-walnut-brown/5"
             }`}
           >
             Archived Drafts
           </button>
         </div>
-
       </div>
 
       {/* Grid of Products */}
@@ -331,7 +372,11 @@ export default function ProductsPage() {
                   {/* Image & Type tags */}
                   <div className="relative aspect-[16/10] bg-walnut-brown/5 rounded-xl overflow-hidden mb-4 border border-walnut-brown/5">
                     {hasImages ? (
-                      <img src={p.images[0].url} alt={p.name} className="w-full h-full object-cover" />
+                      <img
+                        src={p.images[0].url}
+                        alt={p.name}
+                        className="w-full h-full object-cover"
+                      />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center text-walnut-brown/20 text-xs font-semibold">
                         No Images
@@ -343,22 +388,30 @@ export default function ProductsPage() {
                         {p.category}
                       </Badge>
                       {p.isMadeToOrder ? (
-                        <Badge variant="sage" size="sm">Made to Order</Badge>
+                        <Badge variant="sage" size="sm">
+                          Made to Order
+                        </Badge>
                       ) : (
-                        <Badge variant="success" size="sm">Inventory Sale</Badge>
+                        <Badge variant="success" size="sm">
+                          Inventory Sale
+                        </Badge>
                       )}
                     </div>
                   </div>
 
                   {/* Name and Price */}
                   <div className="space-y-1">
-                    <h3 className="font-heading text-base font-bold text-walnut-brown truncate">{p.name}</h3>
+                    <h3 className="font-heading text-base font-bold text-walnut-brown truncate">
+                      {p.name}
+                    </h3>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-extrabold text-walnut-brown">
                         {formatCurrency(p.listedPrice)}
                       </span>
                       {!p.isMadeToOrder && p.negotiable && (
-                        <Badge variant="whatsapp" size="sm">Negotiable</Badge>
+                        <Badge variant="whatsapp" size="sm">
+                          Negotiable
+                        </Badge>
                       )}
                     </div>
                   </div>
@@ -366,7 +419,9 @@ export default function ProductsPage() {
                   {/* Stock Management panel */}
                   {!p.isMadeToOrder ? (
                     <div className="mt-4 flex items-center justify-between bg-warm-cream/35 p-2.5 rounded-xl border border-walnut-brown/5">
-                      <span className="text-[10px] font-bold text-walnut-brown/60 uppercase">In Stock:</span>
+                      <span className="text-[10px] font-bold text-walnut-brown/60 uppercase">
+                        In Stock:
+                      </span>
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
@@ -377,7 +432,9 @@ export default function ProductsPage() {
                         >
                           <HiMinusCircle size={22} />
                         </button>
-                        <span className="font-bold text-sm w-6 text-center text-walnut-brown">{p.quantity}</span>
+                        <span className="font-bold text-sm w-6 text-center text-walnut-brown">
+                          {p.quantity}
+                        </span>
                         <button
                           type="button"
                           onClick={() => handleAdjustStock(p._id, 1)}
@@ -427,15 +484,18 @@ export default function ProductsPage() {
                     </Button>
                   )}
                 </div>
-
               </div>
             );
           })}
         </div>
       ) : (
         <EmptyState
-          title="No products logged"
-          description="Click the Add New Product button above to log cots drafts to your inventory dashboard."
+          title={showArchived ? "No archived products" : "No products logged"}
+          description={
+            showArchived
+              ? "Archived products will appear here when you remove them from the active catalog."
+              : "Click the Add New Product button above to log furniture items into your inventory dashboard."
+          }
         />
       )}
 
@@ -443,7 +503,11 @@ export default function ProductsPage() {
       <Modal
         isOpen={formOpen}
         onClose={() => setFormOpen(false)}
-        title={editingProduct ? `Edit Product: ${editingProduct.name}` : 'Log New Furniture Item'}
+        title={
+          editingProduct
+            ? `Edit Product: ${editingProduct.name}`
+            : "Log New Furniture Item"
+        }
         size="lg"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
@@ -570,10 +634,19 @@ export default function ProductsPage() {
             />
 
             <div className="pt-2 flex justify-end gap-2">
-              <Button variant="outline" size="sm" onClick={() => setFormOpen(false)}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setFormOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button type="submit" variant="primary" size="sm" isLoading={isSubmitting}>
+              <Button
+                type="submit"
+                variant="primary"
+                size="sm"
+                isLoading={isSubmitting}
+              >
                 Save Product
               </Button>
             </div>
@@ -589,19 +662,30 @@ export default function ProductsPage() {
               />
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-center p-6 text-charcoal-text/50">
-                <svg className="w-12 h-12 stroke-current mb-3 opacity-60" fill="none" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-12 h-12 stroke-current mb-3 opacity-60"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
-                <h4 className="font-heading text-sm font-bold text-walnut-brown">Image Uploader Blocked</h4>
+                <h4 className="font-heading text-sm font-bold text-walnut-brown">
+                  Image Uploader Blocked
+                </h4>
                 <p className="text-xs leading-relaxed mt-1">
-                  You must save the base product specifications once before you can drag and drop media files.
+                  You must save the base product specifications once before you
+                  can drag and drop media files.
                 </p>
               </div>
             )}
           </div>
         </div>
       </Modal>
-
     </div>
   );
 }

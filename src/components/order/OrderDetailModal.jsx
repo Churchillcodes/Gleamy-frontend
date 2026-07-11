@@ -107,20 +107,22 @@ export default function OrderDetailModal({
     }
   };
 
-  const handleCancelOrder = async () => {
-    if (
-      !confirm(
-        "Are you sure you want to CANCEL this order? This action is permanent.",
-      )
-    )
-      return;
-
+  const performCancel = async () => {
     setIsUpdating(true);
+
     const loadId = toast.loading("Cancelling order...");
+
     try {
       const data = await orderApi.cancelOrder(_id);
-      toast.success("Order has been cancelled.", { id: loadId });
-      if (onOrderUpdate) onOrderUpdate(data.order || data);
+
+      toast.success("Order has been cancelled.", {
+        id: loadId,
+      });
+
+      if (onOrderUpdate) {
+        onOrderUpdate(data.order || data);
+      }
+
       onClose();
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to cancel order.", {
@@ -129,6 +131,46 @@ export default function OrderDetailModal({
     } finally {
       setIsUpdating(false);
     }
+  };
+
+  const handleCancelOrder = () => {
+    toast(
+      (t) => (
+        <div className="space-y-3">
+          <p className="text-sm font-semibold text-charcoal-text">
+            Cancel this order permanently?
+          </p>
+
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="danger"
+              onClick={() => {
+                toast.dismiss(t.id);
+                performCancel();
+              }}
+            >
+              Yes, Cancel
+            </Button>
+
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Keep Order
+            </Button>
+          </div>
+        </div>
+      ),
+      {
+        duration: Infinity,
+        style: {
+          background: "#FAF6F0", // Warm cream
+          color: "#5C4033", // Walnut brown
+        },
+      },
+    );
   };
 
   const formattedDate = new Date(createdAt).toLocaleDateString("en-KE", {

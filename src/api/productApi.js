@@ -1,9 +1,9 @@
-import axiosInstance from './axiosInstance';
+import axiosInstance from "./axiosInstance";
 
 export const productApi = {
   // Public
   getAllProducts: async () => {
-    const response = await axiosInstance.get('/products');
+    const response = await axiosInstance.get("/products");
     return response.data; // Raw array of active products
   },
 
@@ -14,17 +14,19 @@ export const productApi = {
 
   // Admin
   getArchivedProducts: async () => {
-    const response = await axiosInstance.get('/products/archived');
-    return response.data;
+    const response = await axiosInstance.get("/products/archived");
+    return Array.isArray(response.data) ? response.data : [];
   },
 
   getLowStockProducts: async (threshold = 5) => {
-    const response = await axiosInstance.get(`/products/low-stock?threshold=${threshold}`);
+    const response = await axiosInstance.get(
+      `/products/low-stock?threshold=${threshold}`,
+    );
     return response.data;
   },
 
   createProduct: async (productData) => {
-    const response = await axiosInstance.post('/products', productData);
+    const response = await axiosInstance.post("/products", productData);
     return response.data;
   },
 
@@ -44,27 +46,40 @@ export const productApi = {
   },
 
   increaseStock: async (id, quantity) => {
-    const response = await axiosInstance.patch(`/products/${id}/increase-stock`, { quantity });
-    return response.data;
+    const response = await axiosInstance.patch(
+      `/products/${id}/increase-stock`,
+      { quantity },
+    );
+
+    return response.data.product;
   },
 
   reduceStock: async (id, quantity) => {
-    const response = await axiosInstance.patch(`/products/${id}/reduce-stock`, { quantity });
-    return response.data;
+    const response = await axiosInstance.patch(`/products/${id}/reduce-stock`, {
+      quantity,
+    });
+
+    return response.data.product;
   },
 
   uploadImages: async (id, formData) => {
     // formData must contain files in key 'images'
-    const response = await axiosInstance.post(`/products/${id}/images`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
+    const response = await axiosInstance.post(
+      `/products/${id}/images`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return response.data;
   },
 
   deleteImage: async (productId, imageId) => {
-    const response = await axiosInstance.delete(`/products/${productId}/images/${imageId}`);
+    const response = await axiosInstance.delete(
+      `/products/${productId}/images/${imageId}`,
+    );
     return response.data;
-  }
+  },
 };
