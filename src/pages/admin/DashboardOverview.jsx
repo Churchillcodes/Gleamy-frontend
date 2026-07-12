@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 export default function DashboardOverview() {
   const [summary, setSummary] = useState(null);
   const [revenue, setRevenue] = useState(null);
+  const [leadAnalytics, setLeadAnalytics] = useState(null);
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,14 +26,17 @@ export default function DashboardOverview() {
 
   const loadDashboardData = async () => {
     try {
-      const [summaryData, revenueData, ordersData] = await Promise.all([
-        dashboardApi.getSummary(),
-        dashboardApi.getRevenue(),
-        orderApi.getAllOrders(),
-      ]);
+      const [summaryData, revenueData, leadAnalyticsData, ordersData] =
+        await Promise.all([
+          dashboardApi.getSummary(),
+          dashboardApi.getRevenue(),
+          dashboardApi.getLeadAnalytics(),
+          orderApi.getAllOrders(),
+        ]);
 
       setSummary(summaryData);
       setRevenue(revenueData);
+      setLeadAnalytics(leadAnalyticsData);
 
       // Sort orders by date descending and take top 5
       const sorted = [...ordersData].sort(
@@ -73,6 +77,10 @@ export default function DashboardOverview() {
     ? `${summary.pendingOrders} Pending / ${summary.confirmedOrders} Confirmed`
     : "0 / 0";
 
+  const lowStockText = summary
+    ? `${summary.lowStockProducts} Low Stock`
+    : "0 Low Stock";
+
   return (
     <div className="space-y-10">
       {/* Page Header */}
@@ -107,7 +115,7 @@ export default function DashboardOverview() {
           title="Product Inventory"
           value={summary?.totalProducts || 0}
           icon={HiOutlineCollection}
-          description={activeVSArchived}
+          description={`${activeVSArchived} • ${lowStockText}`}
           variant="default"
         />
 
@@ -118,6 +126,44 @@ export default function DashboardOverview() {
           description={pendingVSConfirmed}
           variant="default"
         />
+      </div>
+
+      <div className="bg-white border border-walnut-brown/10 rounded-2xl p-6 shadow-xs">
+        <h2 className="text-xl font-bold text-walnut-brown mb-4">
+          Lead Analytics
+        </h2>
+
+        <div className="space-y-4">
+          <div>
+            <p className="text-sm text-charcoal-text/60">Total Leads</p>
+
+            <p className="text-3xl font-bold text-walnut-brown">
+              {leadAnalytics?.totalLeads || 0}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-charcoal-text/60">Top Source</p>
+
+            <p className="font-semibold text-soft-sage">
+              {leadAnalytics?.topSource || "N/A"}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-charcoal-text/60 mb-2">Lead Sources</p>
+
+            <div className="space-y-2">
+              {leadAnalytics?.leadSources?.map((item) => (
+                <div key={item.source} className="flex justify-between text-sm">
+                  <span>{item.source}</span>
+
+                  <span className="font-semibold">{item.count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Recent Orders Table */}

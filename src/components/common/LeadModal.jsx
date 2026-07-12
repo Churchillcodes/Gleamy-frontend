@@ -4,8 +4,12 @@ import Button from "./Button";
 import Input from "./Input";
 import { generateWhatsAppLink } from "../../utils/whatsappLink";
 import { FaWhatsapp } from "react-icons/fa";
+import toast from "react-hot-toast";
+import { leadApi } from "../../api/leadApi";
 
-export default function LeadModal({ isOpen, onClose, baseMessage }) {
+export default function LeadModal({ isOpen, onClose, baseMessage, product }) {
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
   const [source, setSource] = useState("Instagram");
   const [otherText, setOtherText] = useState("");
   const [error, setError] = useState("");
@@ -19,28 +23,56 @@ export default function LeadModal({ isOpen, onClose, baseMessage }) {
     "Other",
   ];
 
-  const handleProceed = () => {
-    setError("");
-    let finalSource = source;
+  const handleProceed = async () => {
+    try {
+      setError("");
 
-    if (source === "Other") {
-      if (!otherText.trim()) {
-        setError("Please specify how you heard about us.");
+      if (!customerName.trim()) {
+        setError("Please enter your name");
         return;
       }
-      finalSource = otherText.trim();
+
+      if (!customerPhone.trim()) {
+        setError("Please enter your phone number");
+        return;
+      }
+
+      let finalSource = source;
+
+      if (source === "Other") {
+        if (!otherText.trim()) {
+          setError("Please specify how you heard about us.");
+          return;
+        }
+
+        finalSource = otherText.trim();
+      }
+
+      await leadApi.createLead({
+        customerName,
+        customerPhone,
+        source: finalSource,
+        product: product._id,
+        productName: product.name,
+      });
+
+      const finalMessage =
+        `${baseMessage}\n\n` + `(Lead Source: ${finalSource})`;
+
+      const link = generateWhatsAppLink(finalMessage);
+
+      window.open(link, "_blank", "noopener,noreferrer");
+
+      toast.success("Redirecting to WhatsApp...");
+
+      setCustomerName("");
+      setCustomerPhone("");
+      setOtherText("");
+
+      onClose();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to save inquiry.");
     }
-
-    // Append the source to the base inquiry message
-    const finalMessage = `${baseMessage}\n\n(I heard about gleamy via: ${finalSource})`;
-    const link = generateWhatsAppLink(finalMessage);
-
-    // Open WhatsApp
-    window.open(link, "_blank", "noopener,noreferrer");
-
-    // Reset state & close
-    setOtherText("");
-    onClose();
   };
 
   const footerActions = (
@@ -68,12 +100,45 @@ export default function LeadModal({ isOpen, onClose, baseMessage }) {
       size="sm"
     >
       <div className="space-y-4">
-        <p className="text-xs text-charcoal-text/80 leading-relaxed font-medium">
-          Naomi & Ivan would love to know: **How did you hear about gleamy Baby
-          Cots & Furniture?**
+        <p className="text-sm text-charcoal-text/80 leading-relaxed">
+          Before we connect on WhatsApp, we'd love to know a little about you.
+          This information helps us understand where our customers come from and
+          improve our service.
         </p>
 
-        <div className="grid grid-cols-1 gap-2.5 pt-2">
+        <p className="text-xs text-charcoal-text/60">
+          You'll be redirected to WhatsApp immediately after submitting.
+        </p>
+
+        <Input
+          label="Your Name"
+          placeholder="Enter your name"
+          value={customerName}
+          onChange={(e) => {
+            setCustomerName(e.target.value);
+            setError("");
+          }}
+          required
+        />
+
+        <Input
+          label="Phone Number"
+          placeholder="07XXXXXXXX"
+          value={customerPhone}
+          onChange={(e) => {
+            setCustomerPhone(e.target.value);
+            setError("");
+          }}
+          required
+        />
+
+        <div className="pt-2">
+          <p className="text-xs font-semibold text-charcoal-text mb-2">
+            How did you hear about Gleamy?
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2.5">
           {sources.map((src) => (
             <label
               key={src}
