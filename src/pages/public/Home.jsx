@@ -114,7 +114,7 @@ export default function Home() {
     <div className="space-y-20 pb-16">
       {/* 1. Hero Panel */}
       <section className="relative bg-walnut-brown text-warm-cream py-20 lg:py-28 overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
           <Badge variant="sage" className="animate-pulse px-3 py-1 text-xs">
@@ -304,7 +304,7 @@ export default function Home() {
       {/* 6. CTA Banner */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-walnut-brown rounded-3xl p-8 sm:p-12 lg:p-16 text-center space-y-6 relative overflow-hidden shadow-2xl">
-          <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] [background-size:16px_16px]" />
+          <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] bg-size-[16px_16px]" />
 
           <h2 className="font-heading text-2xl sm:text-4xl font-extrabold text-white max-w-2xl mx-auto">
             Ready to Start Customizing Your Nursery or Living Space?

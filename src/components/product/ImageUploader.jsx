@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { HiPlus, HiTrash, HiPhotograph } from "react-icons/hi";
 import { productApi } from "../../api/productApi";
 import toast from "react-hot-toast";
+import { confirmToast } from "../../utils/confirmToast";
 
 export default function ImageUploader({
   product,
@@ -62,17 +63,7 @@ export default function ImageUploader({
     handleFileUpload(e.target.files);
   };
 
-  const handleDeleteImage = async (imageId) => {
-    // Rule: Cannot delete the last remaining image
-    if (images.length <= 1) {
-      toast.error(
-        "Products must have at least 1 image. Upload a new one before removing this.",
-      );
-      return;
-    }
-
-    if (!confirm("Are you sure you want to delete this image?")) return;
-
+  const runDeleteImage = async (imageId) => {
     const loadId = toast.loading("Deleting image...");
     try {
       const updatedProduct = await productApi.deleteImage(productId, imageId);
@@ -83,6 +74,21 @@ export default function ImageUploader({
         id: loadId,
       });
     }
+  };
+
+  const handleDeleteImage = (imageId) => {
+    if (images.length <= 1) {
+      toast.error(
+        "Products must have at least 1 image. Upload a new one before removing this.",
+      );
+      return;
+    }
+
+    confirmToast(
+      "Delete this image? This cannot be undone.",
+      () => runDeleteImage(imageId),
+      { confirmLabel: "Yes, Delete" },
+    );
   };
 
   const onDragOver = (e) => {
@@ -120,7 +126,7 @@ export default function ImageUploader({
             />
             <button
               type="button"
-              onClick={() => handleDeleteImage(img._id || img.publicId)}
+              onClick={() => handleDeleteImage(img._id)}
               className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity cursor-pointer duration-150"
               title="Delete Image"
             >

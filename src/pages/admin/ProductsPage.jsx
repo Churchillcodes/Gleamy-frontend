@@ -9,6 +9,7 @@ import ImageUploader from "../../components/product/ImageUploader";
 import Loader from "../../components/common/Loader";
 import EmptyState from "../../components/common/EmptyState";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { confirmToast } from "../../utils/confirmToast";
 import {
   HiPlus,
   HiSearch,
@@ -28,12 +29,10 @@ export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Modal State
   const [formOpen, setFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form Fields
   const [formData, setFormData] = useState({
     name: "",
     category: CATEGORIES[0],
@@ -75,7 +74,6 @@ export default function ProductsPage() {
     loadProducts();
   }, [showArchived]);
 
-  // Form bindings
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -125,7 +123,6 @@ export default function ProductsPage() {
     setFormOpen(true);
   };
 
-  // Stock Adjustment inline
   const handleAdjustStock = async (id, delta) => {
     try {
       if (delta > 0) {
@@ -145,14 +142,7 @@ export default function ProductsPage() {
     }
   };
 
-  // Archive / Soft Delete
-  const handleArchive = async (id) => {
-    if (
-      !confirm(
-        "Are you sure you want to ARCHIVE this product? It will not appear on the shopfront.",
-      )
-    )
-      return;
+  const runArchive = async (id) => {
     try {
       await productApi.archiveProduct(id);
       toast.success("Product archived.");
@@ -160,6 +150,14 @@ export default function ProductsPage() {
     } catch (err) {
       toast.error("Failed to archive product.");
     }
+  };
+
+  const handleArchive = (id) => {
+    confirmToast(
+      "Archive this product? It will no longer appear on the shopfront.",
+      () => runArchive(id),
+      { confirmLabel: "Yes, Archive" },
+    );
   };
 
   const handleRestore = async (id) => {
@@ -172,7 +170,6 @@ export default function ProductsPage() {
     }
   };
 
-  // Form Validation
   const validateForm = () => {
     const errs = {};
     if (
@@ -205,7 +202,6 @@ export default function ProductsPage() {
     setIsSubmitting(true);
     const loadId = toast.loading("Saving product...");
 
-    // Format colors and dimensions
     const colors = formData.colorsInput
       ? formData.colorsInput
           .split(",")
@@ -224,8 +220,8 @@ export default function ProductsPage() {
       category: formData.category,
       description: formData.description.trim(),
       listedPrice: Number(formData.listedPrice),
-      negotiable: formData.isMadeToOrder ? false : formData.negotiable, // Rule 1 enforce
-      quantity: formData.isMadeToOrder ? 0 : Number(formData.quantity), // Made to order holds 0 stock
+      negotiable: formData.isMadeToOrder ? false : formData.negotiable,
+      quantity: formData.isMadeToOrder ? 0 : Number(formData.quantity),
       isMadeToOrder: formData.isMadeToOrder,
       dimensions,
       colors,
@@ -245,7 +241,6 @@ export default function ProductsPage() {
         toast.success("Product created! Keep editing to upload images.", {
           id: loadId,
         });
-        // Automatically switch to editing mode for image uploads!
         setEditingProduct(created);
         setFormData((prev) => ({
           ...prev,
@@ -262,7 +257,6 @@ export default function ProductsPage() {
     }
   };
 
-  // Image upload triggers
   const handleImageChange = (updatedProduct) => {
     setEditingProduct(updatedProduct);
     loadProducts();
@@ -284,7 +278,6 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-walnut-brown leading-tight">
@@ -300,9 +293,7 @@ export default function ProductsPage() {
         </Button>
       </div>
 
-      {/* Control panel bar */}
       <div className="bg-white p-4 rounded-2xl border border-walnut-brown/10 shadow-xs flex flex-col md:flex-row gap-4 items-center justify-between">
-        {/* Search & Category selectors */}
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <div className="relative">
             <span className="absolute inset-y-0 left-3 flex items-center text-charcoal-text/40">
@@ -331,7 +322,6 @@ export default function ProductsPage() {
           </select>
         </div>
 
-        {/* View toggle active/archived */}
         <div className="flex gap-2">
           <button
             onClick={() => setShowArchived(false)}
@@ -356,7 +346,6 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Grid of Products */}
       {loading ? (
         <Loader type="spinner" className="min-h-[40vh]" />
       ) : filteredProducts.length > 0 ? (
@@ -369,8 +358,7 @@ export default function ProductsPage() {
                 className="bg-white rounded-2xl border border-walnut-brown/12 p-5 flex flex-col justify-between hover:shadow-lg transition-all"
               >
                 <div>
-                  {/* Image & Type tags */}
-                  <div className="relative aspect-[16/10] bg-walnut-brown/5 rounded-xl overflow-hidden mb-4 border border-walnut-brown/5">
+                  <div className="relative aspect-16/10 bg-walnut-brown/5 rounded-xl overflow-hidden mb-4 border border-walnut-brown/5">
                     {hasImages ? (
                       <img
                         src={p.images[0].url}
@@ -399,7 +387,6 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  {/* Name and Price */}
                   <div className="space-y-1">
                     <h3 className="font-heading text-base font-bold text-walnut-brown truncate">
                       {p.name}
@@ -416,7 +403,6 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  {/* Stock Management panel */}
                   {!p.isMadeToOrder ? (
                     <div className="mt-4 flex items-center justify-between bg-warm-cream/35 p-2.5 rounded-xl border border-walnut-brown/5">
                       <span className="text-[10px] font-bold text-walnut-brown/60 uppercase">
@@ -452,7 +438,6 @@ export default function ProductsPage() {
                   )}
                 </div>
 
-                {/* Edit & Soft Delete Action buttons */}
                 <div className="mt-5 pt-3 border-t border-walnut-brown/5 grid grid-cols-2 gap-2">
                   <Button
                     variant="outline"
@@ -499,7 +484,6 @@ export default function ProductsPage() {
         />
       )}
 
-      {/* Add / Edit Drawer Modal */}
       <Modal
         isOpen={formOpen}
         onClose={() => setFormOpen(false)}
@@ -511,7 +495,6 @@ export default function ProductsPage() {
         size="lg"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* Left Form controls */}
           <form onSubmit={handleFormSubmit} className="space-y-4">
             <Input
               label="Product Name"
@@ -595,7 +578,6 @@ export default function ProductsPage() {
               required
             />
 
-            {/* Dimensions */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-walnut-brown tracking-wide block">
                 Dimensions (cm, Optional)
@@ -652,8 +634,7 @@ export default function ProductsPage() {
             </div>
           </form>
 
-          {/* Right Image Drag/Drop Uploader */}
-          <div className="bg-warm-cream/35 p-5 rounded-2xl border border-walnut-brown/10 min-h-[300px]">
+          <div className="bg-warm-cream/35 p-5 rounded-2xl border border-walnut-brown/10 min-h-75">
             {editingProduct ? (
               <ImageUploader
                 product={editingProduct}

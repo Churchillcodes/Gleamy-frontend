@@ -27,22 +27,22 @@ export const productApi = {
 
   createProduct: async (productData) => {
     const response = await axiosInstance.post("/products", productData);
-    return response.data;
+    return response.data.newProduct;
   },
 
   updateProduct: async (id, productData) => {
     const response = await axiosInstance.patch(`/products/${id}`, productData);
-    return response.data;
+    return response.data.updatedProduct;
   },
 
   archiveProduct: async (id) => {
     const response = await axiosInstance.delete(`/products/${id}`);
-    return response.data;
+    return response.data.product;
   },
 
   restoreProduct: async (id) => {
     const response = await axiosInstance.patch(`/products/${id}/restore`);
-    return response.data;
+    return response.data.product;
   },
 
   increaseStock: async (id, quantity) => {
@@ -73,13 +73,13 @@ export const productApi = {
         },
       },
     );
-    return response.data;
+    return response.data.product;
   },
 
   deleteImage: async (productId, imageId) => {
     const response = await axiosInstance.delete(
       `/products/${productId}/images/${imageId}`,
     );
-    return response.data;
+    return response.data.product;
   },
 };
