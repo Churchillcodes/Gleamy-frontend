@@ -36,10 +36,15 @@ export default function TopProductsChart({ data = [] }) {
           const percentage = ((item.unitsSold || 0) / maxSales) * 100;
 
           return (
-            <div key={item.productId || idx} className="space-y-2">
+            <div key={item.productName || idx} className="space-y-2">
               <div className="flex justify-between items-center text-xs">
+                {/* FIX: backend's getTopProducts aggregation returns
+                    { productName, unitsSold, revenue } — there is no
+                    "name" field. Reading item.name silently fell back to
+                    "Custom Build" for every single row, regardless of the
+                    real product sold. */}
                 <span className="font-semibold text-charcoal-text truncate max-w-50 sm:max-w-xs">
-                  {idx + 1}. {item.name || "Custom Build"}
+                  {idx + 1}. {item.productName || "Unnamed Product"}
                 </span>
                 <span className="text-[10px] font-bold text-walnut-brown tracking-wider">
                   {item.unitsSold} sold &middot;{" "}
