@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HiMenu, HiX } from "react-icons/hi";
 import { RiAdminLine } from "react-icons/ri";
@@ -7,6 +7,9 @@ import useAuth from "../../hooks/useAuth";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
   const { isAuthenticated, isAdmin } = useAuth();
 
   const navLinks = [
@@ -39,7 +42,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Nav Links */}
-          <div className="hidden xl:flex items-center space-x-8">
+          <div className="hidden xl:flex items-center space-x-4">
             {navLinks.map((link) => (
               <Link
                 key={link.path}

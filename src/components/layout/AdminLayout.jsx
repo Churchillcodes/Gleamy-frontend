@@ -1,24 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import { HiMenu } from "react-icons/hi";
+import { useLocation } from "react-router-dom";
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
 
+  useEffect(() => {
+    // Close the sidebar when the route changes
+    setSidebarOpen(false);
+  }, [location.pathname]);
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
 
   return (
-    <div className="min-h-screen bg-warm-cream flex flex-col lg:flex-row">
+    <div className="min-h-screen bg-warm-cream flex flex-col xl:flex-row overflow-x-hidden">
       {/* Admin Sidebar */}
       <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Page Space */}
-      <div className="grow flex flex-col lg:pl-64 min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen xl:pl-64 min-w-0">
         {/* Mobile Header Bar */}
-        <header className="bg-warm-cream border-b border-walnut-brown/10 px-4 py-4 flex items-center justify-between lg:hidden sticky top-0 z-30">
+        <header className="bg-warm-cream border-b border-walnut-brown/10 px-4 py-4 flex items-center justify-between xl:hidden sticky top-0 z-30">
           <button
             onClick={toggleSidebar}
             className="text-walnut-brown focus:outline-none p-2 rounded-md hover:bg-walnut-brown/5"
@@ -38,7 +44,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Admin Content Area */}
-        <main className="grow p-4 sm:p-6 lg:p-8 w-full max-w-full overflow-x-hidden">
+        <main className="grow p-4 sm:p-6 lg:p-8 w-full max-w-full overflow-x-hidden min-w-0">
           <Outlet />
         </main>
       </div>

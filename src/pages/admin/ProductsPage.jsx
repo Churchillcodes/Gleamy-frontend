@@ -57,8 +57,6 @@ export default function ProductsPage() {
       } else {
         data = await productApi.getAllProducts();
         const lowStock = await productApi.getLowStockProducts();
-
-        console.log("Low stock products:", lowStock);
       }
       setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
