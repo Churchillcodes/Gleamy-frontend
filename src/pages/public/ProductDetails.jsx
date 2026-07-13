@@ -15,6 +15,7 @@ import Badge from "../../components/common/Badge";
 import Button from "../../components/common/Button";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { getProductInquiryLink } from "../../utils/whatsappLink";
+import LeadModal from "../../components/common/LeadModal";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -22,6 +23,7 @@ export default function ProductDetails() {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [leadModalOpen, setLeadModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -108,7 +110,9 @@ export default function ProductDetails() {
   const isOutOfStock = isMadeToOrder === false && quantity === 0;
   const isInStock = isMadeToOrder === false && quantity > 0;
 
-  const inquiryLink = getProductInquiryLink(product);
+  const baseMessage = decodeURIComponent(
+    getProductInquiryLink(product).split("text=")[1],
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
@@ -234,15 +238,13 @@ export default function ProductDetails() {
                 Inquiries Closed (Out of Stock)
               </button>
             ) : (
-              <a
-                href={inquiryLink}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => setLeadModalOpen(true)}
                 className="w-full py-4 px-6 rounded-2xl font-bold bg-whatsapp-green hover:bg-whatsapp-green/95 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-99 transition-all flex items-center justify-center gap-2.5"
               >
-                <FaWhatsapp size={20} />
-                <span>Inquire & Customize on WhatsApp</span>
-              </a>
+                <FaWhatsapp size={14} />
+                Inquire & Customize on WhatsApp
+              </button>
             )}
             <p className="text-[10px] text-center text-charcoal-text/50 font-semibold uppercase tracking-wider mt-2.5">
               Clicking open will deep-link directly to Ivan & Naomi
@@ -264,6 +266,12 @@ export default function ProductDetails() {
           </div>
         </section>
       )}
+      <LeadModal
+        isOpen={leadModalOpen}
+        onClose={() => setLeadModalOpen(false)}
+        baseMessage={baseMessage}
+        product={product}
+      />
     </div>
   );
 }

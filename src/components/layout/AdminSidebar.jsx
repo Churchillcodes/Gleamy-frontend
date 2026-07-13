@@ -43,13 +43,13 @@ export default function AdminSidebar({ isOpen, toggleSidebar }) {
       {isOpen && (
         <div
           onClick={toggleSidebar}
-          className="fixed inset-0 z-30 bg-black/30 md:hidden transition-opacity"
+          className="fixed inset-0 z-30 bg-black/30 lg:hidden transition-opacity"
         />
       )}
 
       {/* Sidebar container */}
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-warm-cream border-r border-walnut-brown/10 p-6 flex flex-col justify-between transform transition-transform duration-300 md:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-warm-cream border-r border-walnut-brown/10 p-6 flex flex-col justify-between transform transition-transform duration-300 lg:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -81,7 +81,7 @@ export default function AdminSidebar({ isOpen, toggleSidebar }) {
                 to={link.path}
                 end={link.exact}
                 onClick={() => {
-                  if (window.innerWidth < 768) {
+                  if (window.innerWidth < 1024) {
                     toggleSidebar();
                   }
                 }}

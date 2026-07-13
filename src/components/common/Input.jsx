@@ -73,6 +73,7 @@ export default function Input({
           type={type}
           value={value}
           onChange={onChange}
+          onWheel={(e) => e.target.blur()}
           placeholder={placeholder}
           required={required}
           className={`${baseInputStyles} ${borderStyles}`}

@@ -13,7 +13,6 @@ import { confirmToast } from "../../utils/confirmToast";
 import {
   HiPlus,
   HiSearch,
-  HiTrash,
   HiRefresh,
   HiPlusCircle,
   HiMinusCircle,
@@ -125,6 +124,14 @@ export default function ProductsPage() {
 
   const handleAdjustStock = async (id, delta) => {
     try {
+      const product = products.find((p) => p._id === id);
+
+      if (!product) return;
+
+      if (delta < 0 && product.quantity <= 0) {
+        toast.error("Stock cannot go below zero.");
+        return;
+      }
       if (delta > 0) {
         const updated = await productApi.increaseStock(id, delta);
         setProducts((prev) => prev.map((p) => (p._id === id ? updated : p)));
@@ -145,7 +152,7 @@ export default function ProductsPage() {
   const runArchive = async (id) => {
     try {
       await productApi.archiveProduct(id);
-      toast.success("Product archived.");
+      toast.success("Product archived.", { duration: 3000 });
       loadProducts();
     } catch (err) {
       toast.error("Failed to archive product.");
@@ -163,7 +170,7 @@ export default function ProductsPage() {
   const handleRestore = async (id) => {
     try {
       await productApi.restoreProduct(id);
-      toast.success("Product restored to active catalog.");
+      toast.success("Product restored to active catalog.", { duration: 3000 });
       loadProducts();
     } catch (err) {
       toast.error("Failed to restore product.");
@@ -267,7 +274,8 @@ export default function ProductsPage() {
   const filteredProducts = products.filter((p) => {
     const matchesSearch =
       (p.name?.toLowerCase() || "").includes(query) ||
-      (p.description?.toLowerCase() || "").includes(query);
+      (p.description?.toLowerCase() || "").includes(query) ||
+      (p.category?.toLowerCase() || "").includes(query);
 
     const matchesCategory = selectedCategory
       ? p.category === selectedCategory
@@ -301,7 +309,7 @@ export default function ProductsPage() {
             </span>
             <input
               type="text"
-              placeholder="Search by product name..."
+              placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 pr-4 py-2 border border-walnut-brown/15 bg-warm-cream/20 text-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-walnut-brown/20 focus:border-walnut-brown w-full sm:w-64"
@@ -349,13 +357,13 @@ export default function ProductsPage() {
       {loading ? (
         <Loader type="spinner" className="min-h-[40vh]" />
       ) : filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredProducts.map((p) => {
             const hasImages = p.images && p.images.length > 0;
             return (
               <div
                 key={p._id}
-                className="bg-white rounded-2xl border border-walnut-brown/12 p-5 flex flex-col justify-between hover:shadow-lg transition-all"
+                className="bg-white rounded-2xl border border-walnut-brown/12 p-5 flex flex-col justify-between h-full hover:shadow-lg transition-all"
               >
                 <div>
                   <div className="relative aspect-16/10 bg-walnut-brown/5 rounded-xl overflow-hidden mb-4 border border-walnut-brown/5">

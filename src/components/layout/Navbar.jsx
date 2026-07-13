@@ -39,7 +39,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden xl:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -75,7 +75,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center xl:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-walnut-brown hover:text-walnut-brown/80 focus:outline-none p-2 rounded-md transition-colors"
@@ -89,7 +89,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer menu */}
       {isOpen && (
-        <div className="md:hidden bg-warm-cream border-t border-walnut-brown/10 animate-fadeIn">
+        <div className="xl:hidden bg-warm-cream border-t border-walnut-brown/10 animate-fadeIn">
           <div className="px-2 pt-2 pb-4 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link

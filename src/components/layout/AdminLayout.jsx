@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import { HiMenu } from "react-icons/hi";
-import { Toaster } from "react-hot-toast";
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -12,14 +11,14 @@ export default function AdminLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-warm-cream flex flex-col md:flex-row">
+    <div className="min-h-screen bg-warm-cream flex flex-col lg:flex-row">
       {/* Admin Sidebar */}
       <AdminSidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
 
       {/* Main Page Space */}
-      <div className="grow flex flex-col md:pl-64 min-h-screen">
+      <div className="grow flex flex-col lg:pl-64 min-h-screen">
         {/* Mobile Header Bar */}
-        <header className="bg-warm-cream border-b border-walnut-brown/10 px-4 py-4 flex items-center justify-between md:hidden sticky top-0 z-30">
+        <header className="bg-warm-cream border-b border-walnut-brown/10 px-4 py-4 flex items-center justify-between lg:hidden sticky top-0 z-30">
           <button
             onClick={toggleSidebar}
             className="text-walnut-brown focus:outline-none p-2 rounded-md hover:bg-walnut-brown/5"
@@ -39,7 +38,7 @@ export default function AdminLayout() {
         </header>
 
         {/* Admin Content Area */}
-        <main className="grow p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main className="grow p-4 sm:p-6 lg:p-8 w-full max-w-full overflow-x-hidden">
           <Outlet />
         </main>
       </div>
