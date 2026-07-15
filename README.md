@@ -43,7 +43,7 @@ Gleamy Baby Cots & Furniture is a Nairobi-based furniture manufacturer specializ
 
 It ships with two experiences in one codebase:
 
-- **A public storefront** for browsing, searching, and inquiring about products
+- **A public storefront** for browsing, searching, and inquiring about products — with a lightweight lead-capture step that tells the business where its customers are coming from
 - **A protected admin dashboard** for managing inventory, orders, and sales performance
 
 ---
@@ -58,7 +58,7 @@ It ships with two experiences in one codebase:
 </td>
 <td width="50%">
 <img src="./screenshots/03-featured-products.jpg" width="100%" alt="Featured products" /><br/>
-<sub><b>Featured products</b> — live stock badges and one-tap WhatsApp inquiry</sub>
+<sub><b>Featured products</b> — real product photography, live stock badges, one-tap WhatsApp inquiry</sub>
 </td>
 </tr>
 <tr>
@@ -67,24 +67,31 @@ It ships with two experiences in one codebase:
 <sub><b>Full catalogue</b> — search, category, availability, and sort filters</sub>
 </td>
 <td width="50%">
-<img src="./screenshots/05-contact-inquiry.jpg" width="100%" alt="Contact and inquiry form" /><br/>
-<sub><b>Inquiry form</b> — routes straight into a WhatsApp conversation</sub>
+<img src="./screenshots/05-lead-capture.jpg" width="100%" alt="Lead capture step" /><br/>
+<sub><b>Lead capture</b> — a quick name, phone, and referral-source step before every WhatsApp handoff</sub>
 </td>
 </tr>
 <tr>
 <td width="50%">
-<img src="./screenshots/06-login.jpg" width="100%" alt="Admin login" /><br/>
-<sub><b>Admin authentication</b> — JWT-protected portal access</sub>
+<img src="./screenshots/06-contact-inquiry.jpg" width="100%" alt="Contact and inquiry form" /><br/>
+<sub><b>Inquiry form</b> — routes straight into a WhatsApp conversation</sub>
 </td>
 <td width="50%">
-<img src="./screenshots/07-admin-dashboard.jpg" width="100%" alt="Admin dashboard" /><br/>
-<sub><b>Admin dashboard</b> — revenue, sales volume, and inquiries at a glance</sub>
+<img src="./screenshots/07-login.jpg" width="100%" alt="Admin login" /><br/>
+<sub><b>Admin authentication</b> — JWT-protected portal access</sub>
 </td>
 </tr>
 </table>
 
 <div align="center">
-<img src="./screenshots/08-admin-products.jpg" width="850" alt="Product management" /><br/>
+<img src="./screenshots/08-admin-dashboard.jpg" width="850" alt="Admin dashboard" /><br/>
+<sub><b>Admin dashboard</b> — revenue, sales volume, inventory, and lead source analytics at a glance</sub>
+</div>
+
+<br/>
+
+<div align="center">
+<img src="./screenshots/09-admin-products.jpg" width="850" alt="Product management" /><br/>
 <sub><b>Product management</b> — live stock, pricing, and category control</sub>
 </div>
 
@@ -96,13 +103,19 @@ It ships with two experiences in one codebase:
 - Browse and search the full product catalogue
 - Filter by category and availability
 - View detailed product pages with responsive image galleries
+- A lightweight lead-capture step (name, phone, referral source) before every WhatsApp handoff
 - Contact the business directly via WhatsApp deep links
 - Explore featured and in-stock products on the homepage
 
 ### 📦 Product Catalogue
 - Dynamic, real-time product listing sourced from the backend API
+- Real product photography with graceful fallbacks when an image is missing
 - Category filtering and keyword search
-- Responsive image galleries with graceful fallbacks
+
+### 📥 Lead Capture
+- Short, frictionless form shown before a customer is routed to WhatsApp
+- Captures how each customer found the business (Instagram, Facebook, Google Search, etc.)
+- Feeds directly into the admin dashboard's Lead Analytics widget
 
 ### 🔐 Authentication
 - User registration and secure login
@@ -111,6 +124,7 @@ It ships with two experiences in one codebase:
 
 ### 📊 Admin Dashboard
 - Business metrics: revenue, sales volume, and inventory at a glance
+- Lead analytics — total leads and top referral sources
 - Full product management — create, edit, archive, and restore
 - Inventory monitoring with live stock adjustments
 - Sales analytics with top-selling product rankings
