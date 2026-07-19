@@ -56,7 +56,6 @@ export default function ProductsPage() {
         data = await productApi.getArchivedProducts();
       } else {
         data = await productApi.getAllProducts();
-        const lowStock = await productApi.getLowStockProducts();
       }
       setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
@@ -409,7 +408,7 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  {!p.isMadeToOrder ? (
+                  {!p.isMadeToOrder && p.isActive ? (
                     <div className="mt-4 flex items-center justify-between bg-warm-cream/35 p-2.5 rounded-xl border border-walnut-brown/5">
                       <span className="text-[10px] font-bold text-walnut-brown/60 uppercase">
                         In Stock:

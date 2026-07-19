@@ -12,17 +12,17 @@ export default function Login() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  const { login, isAuthenticated, loading } = useAuth();
+  const { login, isAuthenticated, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
   // Redirect if already authenticated
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isAdmin) {
       const from = location.state?.from?.pathname || "/admin";
       navigate(from, { replace: true });
     }
-  }, [isAuthenticated, navigate, location]);
+  }, [isAuthenticated, isAdmin, navigate, location]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

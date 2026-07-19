@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { productApi } from "../../api/productApi";
 import ProductCard from "../../components/product/ProductCard";
+import HeroCarousel from "../../components/home/HeroCarousel";
 import Loader from "../../components/common/Loader";
 import Button from "../../components/common/Button";
 import Badge from "../../components/common/Badge";
@@ -20,6 +21,7 @@ import { generateWhatsAppLink } from "../../utils/whatsappLink";
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [heroProducts, setHeroProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,6 +30,9 @@ export default function Home() {
         const data = await productApi.getAllProducts();
         // Take the first 3 active products as featured
         setFeaturedProducts(data.slice(0, 3));
+        setHeroProducts(
+          data.filter((p) => p.images && p.images.length > 0).slice(0, 5),
+        );
       } catch (err) {
         console.error("Error fetching featured products:", err);
       } finally {
@@ -113,7 +118,12 @@ export default function Home() {
   return (
     <div className="space-y-20 pb-16">
       {/* 1. Hero Panel */}
-      <section className="relative bg-walnut-brown text-warm-cream py-20 lg:py-28 overflow-hidden">
+      {heroProducts.length > 0 ? (
+        <HeroCarousel products={heroProducts} />
+      ) : (
+        <section className="relative bg-walnut-brown text-warm-cream py-20 lg:py-28 overflow-hidden">
+          {/* ...keep your existing static hero JSX here unchanged as the fallback...
+    <section className="relative bg-walnut-brown text-warm-cream py-20 lg:py-28 overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
@@ -152,6 +162,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+    */}
+        </section>
+      )}
 
       {/* 2. Category Shortcuts */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

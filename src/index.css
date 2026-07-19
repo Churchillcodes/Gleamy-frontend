@@ -1,24 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-warm-cream: #FAF6F0;
-  --color-walnut-brown: #5C4033;
-  --color-soft-sage: #B7C4A0;
-  --color-charcoal-text: #2B2622;
-  --color-whatsapp-green: #25D366;
+  --color-warm-cream: #faf6f0;
+  --color-walnut-brown: #5c4033;
+  --color-soft-sage: #b7c4a0;
+  --color-charcoal-text: #2b2622;
+  --color-whatsapp-green: #25d366;
 
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Poppins', system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-heading: "Poppins", system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
   body {
     @apply bg-warm-cream text-charcoal-text font-sans antialiased min-h-screen selection:bg-soft-sage/30;
   }
-  
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading text-walnut-brown font-semibold tracking-tight;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -29,7 +43,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #FAF6F0;
+  background: #faf6f0;
 }
 
 ::-webkit-scrollbar-thumb {
