@@ -14,7 +14,7 @@ Built with React, Vite, and a WhatsApp-first ordering experience for the Kenyan 
 ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)
 ![License](https://img.shields.io/badge/License-Proprietary-lightgrey?style=for-the-badge)
 
-<img src="./screenshots/01-homepage-hero.jpg" width="850" alt="Gleamy homepage" />
+<img src="./screenshots/01-homepage-hero.png" width="850" alt="Gleamy homepage with rotating product hero" />
 
 </div>
 
@@ -49,6 +49,13 @@ It ships with two experiences in one codebase:
 ---
 
 ## Live Preview
+
+<div align="center">
+<img src="./screenshots/01-homepage-hero.png" width="850" alt="Rotating hero carousel on the homepage" /><br/>
+<sub><b>Rotating product hero</b> — the homepage banner auto-rotates through in-stock catalogue pieces with live images, pricing, and a direct WhatsApp inquiry CTA per product</sub>
+</div>
+
+<br/>
 
 <table>
 <tr>
@@ -100,6 +107,8 @@ It ships with two experiences in one codebase:
 ## Features
 
 ### 🛋️ Public Website
+
+- Dynamic, auto-rotating hero carousel showcasing live catalogue products with images, pricing, and per-product WhatsApp inquiry
 - Browse and search the full product catalogue
 - Filter by category and availability
 - View detailed product pages with responsive image galleries
@@ -107,22 +116,33 @@ It ships with two experiences in one codebase:
 - Contact the business directly via WhatsApp deep links
 - Explore featured and in-stock products on the homepage
 
+### 🎠 Homepage Hero Carousel
+
+- Pulls directly from the live product catalogue — no manually maintained banner content
+- Auto-rotates every few seconds through in-stock, photographed products; pauses on hover
+- Clickable dot navigation and a spotlight card linking straight to the product detail page
+- Falls back gracefully to a static hero if no products currently have images
+
 ### 📦 Product Catalogue
+
 - Dynamic, real-time product listing sourced from the backend API
 - Real product photography with graceful fallbacks when an image is missing
 - Category filtering and keyword search
 
 ### 📥 Lead Capture
+
 - Short, frictionless form shown before a customer is routed to WhatsApp
 - Captures how each customer found the business (Instagram, Facebook, Google Search, etc.)
 - Feeds directly into the admin dashboard's Lead Analytics widget
 
 ### 🔐 Authentication
+
 - User registration and secure login
 - JWT-based authentication with persistent sessions
 - Protected routes and role-based access control
 
 ### 📊 Admin Dashboard
+
 - Business metrics: revenue, sales volume, and inventory at a glance
 - Lead analytics — total leads and top referral sources
 - Full product management — create, edit, archive, and restore
@@ -131,22 +151,23 @@ It ships with two experiences in one codebase:
 - Cloudinary-backed product image uploads
 
 ### 📱 Responsive Design
+
 Fully responsive across mobile, tablet, laptop, and desktop, built with CSS3 Flexbox and Grid.
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| UI Library | React |
-| Build Tool | Vite |
-| Routing | React Router |
-| HTTP Client | Axios |
-| Styling | CSS3, Flexbox, CSS Grid |
-| Auth | JWT, Protected Routes |
-| Media | Cloudinary-hosted images |
-| Tooling | Git, GitHub, VS Code |
+| Layer       | Technology               |
+| ----------- | ------------------------ |
+| UI Library  | React                    |
+| Build Tool  | Vite                     |
+| Routing     | React Router             |
+| HTTP Client | Axios                    |
+| Styling     | CSS3, Flexbox, CSS Grid  |
+| Auth        | JWT, Protected Routes    |
+| Media       | Cloudinary-hosted images |
+| Tooling     | Git, GitHub, VS Code     |
 
 ---
 
