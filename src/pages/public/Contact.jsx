@@ -109,11 +109,11 @@ export default function Contact() {
       {/* Title */}
       <div className="text-center max-w-2xl mx-auto space-y-2">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-walnut-brown leading-tight">
-          Contact gleamy Baby Cots
+          Contact Gleamy Baby Cots & Furniture
         </h1>
         <p className="text-sm sm:text-base text-charcoal-text/75 font-medium">
-          Have questions about pricing, wood colors, or dimensions? Fill out the
-          details below to open a direct WhatsApp inquiry.
+          Have questions about pricing, dimensions, wood finishes, or delivery
+          options? Fill out the details below to open a direct WhatsApp inquiry.
         </p>
       </div>
 

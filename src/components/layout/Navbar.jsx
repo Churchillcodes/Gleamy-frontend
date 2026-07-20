@@ -31,13 +31,12 @@ export default function Navbar() {
         <div className="flex justify-between h-20">
           {/* Logo */}
           <div className="shrink-0 flex items-center">
-            <Link to="/" className="flex flex-col">
-              <span className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-walnut-brown">
-                Gleamy
-              </span>
-              <span className="text-[10px] sm:text-xs tracking-wider uppercase font-semibold text-soft-sage -mt-1.5">
-                Baby Cots & Furniture
-              </span>
+            <Link to="/" className="flex items-center" aria-label="Gleamy home">
+              <img
+                src="/gleamy-logo-compact.png"
+                alt="Gleamy Baby Cots & Furniture"
+                className="h-28 sm:h-28 w-auto"
+              />
             </Link>
           </div>
 

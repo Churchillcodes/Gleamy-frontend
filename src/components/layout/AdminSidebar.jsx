@@ -56,17 +56,24 @@ export default function AdminSidebar({ isOpen, toggleSidebar }) {
         <div className="space-y-8">
           {/* Logo / Header */}
           <div className="flex flex-col border-b border-walnut-brown/15 pb-4">
-            <span className="font-heading text-xl font-bold tracking-tight text-walnut-brown">
-              gleamy Admin
+            <img
+              src="/gleamy-logo-compact.png"
+              alt="Gleamy"
+              className="h-18 sm:h-18 w-auto"
+            />
+
+            <span className="font-heading text-lg font-bold tracking-tight text-walnut-brown">
+              Admin Control Panel
             </span>
+
             <span className="text-[10px] tracking-wider uppercase font-semibold text-soft-sage mt-0.5">
-              Control Panel
+              Inventory & Orders
             </span>
 
             {user && (
               <span className="text-xs text-charcoal-text/50 mt-2 font-medium">
-                Logged in as:{" "}
-                <strong className="text-charcoal-text/80">
+                Logged in as:
+                <strong className="text-charcoal-text/80 ml-1">
                   {user.username}
                 </strong>
               </span>

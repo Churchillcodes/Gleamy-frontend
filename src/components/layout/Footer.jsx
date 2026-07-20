@@ -17,13 +17,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand Info */}
           <div className="space-y-4 col-span-1 md:col-span-2">
-            <Link to="/" className="flex flex-col">
-              <span className="font-heading text-2xl font-bold tracking-tight text-white">
-                gleamy
-              </span>
-              <span className="text-xs tracking-wider uppercase font-semibold text-soft-sage -mt-1">
-                Baby Cots & Furniture
-              </span>
+            <Link to="/" className="flex items-center" aria-label="Gleamy home">
+              <img
+                src="/gleamy-logo-white.png"
+                alt="Gleamy Baby Cots & Furniture"
+                className="h-18 sm:h-18 w-auto"
+              />
             </Link>
             <p className="text-warm-cream/70 text-sm max-w-sm mt-3 leading-relaxed">
               Premium wooden nursery cots, chests of drawers, wardrobes, TV
@@ -128,7 +127,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-warm-cream/55 font-medium gap-4">
           <p>
-            &copy; {currentYear} gleamy Baby Cots & Furniture. All rights
+            &copy; {currentYear} Gleamy Baby Cots & Furniture. All rights
             reserved.
           </p>
           <div className="flex gap-4">

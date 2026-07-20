@@ -8,7 +8,7 @@ import { generateWhatsAppLink } from "../../utils/whatsappLink";
 export default function PublicLayout() {
   const handleFloatingClick = () => {
     const text =
-      "Hi gleamy Baby Cots & Furniture, I visited your website and would like to make an inquiry.";
+      "Hi Gleamy Baby Cots & Furniture, I visited your website and would like to make an inquiry.";
     const link = generateWhatsAppLink(text);
     window.open(link, "_blank", "noopener,noreferrer");
   };

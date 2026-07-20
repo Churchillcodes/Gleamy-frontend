@@ -78,16 +78,18 @@ export default function Login() {
         <div className="absolute inset-x-0 top-0 h-2 bg-walnut-brown rounded-t-3xl" />
 
         {/* Title */}
-        <div className="text-center space-y-2 mb-8">
-          <div className="mx-auto w-12 h-12 bg-walnut-brown/5 text-walnut-brown rounded-xl flex items-center justify-center">
-            <HiLockClosed size={24} />
+        <div className="text-center space-y-3 mb-8">
+          <img
+            src="/gleamy-icon-primary.png"
+            alt="Gleamy Baby Cots & Furniture"
+            className="h-16 sm:h-20 w-auto mx-auto"
+          />
+          <div className="mx-auto w-10 h-10 bg-walnut-brown/5 text-walnut-brown rounded-xl flex items-center justify-center">
+            <HiLockClosed size={20} />
           </div>
           <h1 className="font-heading text-xl sm:text-2xl font-bold text-walnut-brown">
             Admin Portal Access
           </h1>
-          <p className="text-xs text-charcoal-text/50 uppercase font-bold tracking-wider">
-            gleamy Baby Furniture & Cots
-          </p>
         </div>
 
         {/* Global Error Banner */}

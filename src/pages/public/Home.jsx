@@ -44,7 +44,7 @@ export default function Home() {
 
   const handleHeroInquiry = () => {
     const text =
-      "Hi gleamy Baby Cots & Furniture, I am interested in browsing your handmade beds and home cots. Can we discuss your catalog?";
+      "Hi Gleamy Baby Cots & Furniture, I am interested in browsing your handmade beds and home cots. Can we discuss your catalog?";
     window.open(generateWhatsAppLink(text), "_blank", "noopener,noreferrer");
   };
 
@@ -248,7 +248,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-2">
             <h2 className="text-3xl font-extrabold text-walnut-brown">
-              Why Choose gleamy
+              Why Choose Gleamy
             </h2>
             <p className="text-sm text-charcoal-text/75 font-medium">
               We design with love, craft with precision, and communicate with
