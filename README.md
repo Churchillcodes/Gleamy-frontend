@@ -41,6 +41,8 @@ Built with React, Vite, and a WhatsApp-first ordering experience for the Kenyan 
 
 Gleamy Baby Cots & Furniture is a Nairobi-based furniture manufacturer specializing in baby cots, toddler beds, storage furniture, and custom home fittings. This frontend replaces what was previously a manual, WhatsApp-only sales process with a modern digital storefront — while keeping WhatsApp as the final, familiar step customers already trust.
 
+The storefront is powered by a dynamic product catalogue and hero carousel that automatically surfaces live products from inventory, ensuring the homepage always reflects currently available furniture without manual content updates.
+
 It ships with two experiences in one codebase:
 
 - **A public storefront** for browsing, searching, and inquiring about products — with a lightweight lead-capture step that tells the business where its customers are coming from
@@ -52,7 +54,7 @@ It ships with two experiences in one codebase:
 
 <div align="center">
 <img src="./screenshots/01-homepage-hero.png" width="850" alt="Rotating hero carousel on the homepage" /><br/>
-<sub><b>Rotating product hero</b> — the homepage banner auto-rotates through in-stock catalogue pieces with live images, pricing, and a direct WhatsApp inquiry CTA per product</sub>
+<sub><b>Rotating product hero</b> — the redesigned homepage banner auto-rotates through in-stock catalogue pieces with live images, pricing, and a direct WhatsApp inquiry CTA per product, with a product counter tracking position in the rotation</sub>
 </div>
 
 <br/>
@@ -84,8 +86,8 @@ It ships with two experiences in one codebase:
 <sub><b>Inquiry form</b> — routes straight into a WhatsApp conversation</sub>
 </td>
 <td width="50%">
-<img src="./screenshots/07-login.jpg" width="100%" alt="Admin login" /><br/>
-<sub><b>Admin authentication</b> — JWT-protected portal access</sub>
+<img src="./screenshots/07-login.jpg" width="100%" alt="Admin Portal Access" /><br/>
+<sub><b>Admin Portal Access</b> — redesigned, brand-consistent authentication portal, fully role-protected and separate from the public storefront</sub>
 </td>
 </tr>
 </table>
@@ -108,6 +110,7 @@ It ships with two experiences in one codebase:
 
 ### 🛋️ Public Website
 
+- Refined Gleamy branding and navigation (Home, Catalogue, Contact, Portal)
 - Dynamic, auto-rotating hero carousel showcasing live catalogue products with images, pricing, and per-product WhatsApp inquiry
 - Browse and search the full product catalogue
 - Filter by category and availability
@@ -116,12 +119,14 @@ It ships with two experiences in one codebase:
 - Contact the business directly via WhatsApp deep links
 - Explore featured and in-stock products on the homepage
 
-### 🎠 Homepage Hero Carousel
+### 🎠 Dynamic Homepage Experience
 
-- Pulls directly from the live product catalogue — no manually maintained banner content
-- Auto-rotates every few seconds through in-stock, photographed products; pauses on hover
-- Clickable dot navigation and a spotlight card linking straight to the product detail page
-- Falls back gracefully to a static hero if no products currently have images
+- Automatically rotates through featured catalogue products
+- Pulls live data from the backend API
+- Product spotlight card updates in sync with hero content, with a position counter (e.g. 5/5)
+- Displays category, product name, pricing, and product imagery
+- Direct WhatsApp inquiry action for the currently featured product
+- Graceful fallback if no featured products exist
 
 ### 📦 Product Catalogue
 
@@ -135,11 +140,15 @@ It ships with two experiences in one codebase:
 - Captures how each customer found the business (Instagram, Facebook, Google Search, etc.)
 - Feeds directly into the admin dashboard's Lead Analytics widget
 
-### 🔐 Authentication
+### 🔐 Authentication & Access Control
 
-- User registration and secure login
-- JWT-based authentication with persistent sessions
-- Protected routes and role-based access control
+- JWT authentication
+- Refresh-token session restoration
+- Protected admin routes
+- Role-based access control
+- Admin-only portal access
+- Automatic session recovery on page refresh
+- Secure logout workflow
 
 ### 📊 Admin Dashboard
 
@@ -149,6 +158,18 @@ It ships with two experiences in one codebase:
 - Inventory monitoring with live stock adjustments
 - Sales analytics with top-selling product rankings
 - Cloudinary-backed product image uploads
+
+### 🛠️ Administrative Portal
+
+Authorized administrators can:
+
+- Manage products
+- Upload product images
+- Archive and restore products
+- Monitor inventory
+- Track customer leads
+- Review sales analytics
+- Manage operational data securely
 
 ### 📱 Responsive Design
 
@@ -260,10 +281,15 @@ flowchart TD
 
 ## Security
 
-- Protected routes on both public and admin sides
-- JWT authentication with persistent, secure sessions
-- Role-based access control for admin-only features
-- Secure API communication with the backend
+Frontend security measures include:
+
+- Protected route guards
+- JWT-based authentication
+- Silent session restoration
+- Role-based admin authorization
+- Secure API communication
+- Automatic token refresh workflow
+- Unauthorized-access protection
 
 ---
 
