@@ -37,8 +37,26 @@ export default function Login() {
     const loadId = toast.loading("Authenticating admin session...");
 
     try {
-      await login(username, password);
-      toast.success("Access granted. Welcome back, Admin!", { id: loadId });
+      const userInfo = await login(username, password);
+
+      const allowedRoles = [5150, 1984];
+
+      const hasAccess = userInfo?.roles?.some((role) =>
+        allowedRoles.includes(role),
+      );
+
+      if (!hasAccess) {
+        toast.error("You are not authorized to access the admin portal.", {
+          id: loadId,
+        });
+
+        return;
+      }
+
+      toast.success("Access granted. Welcome back!", {
+        id: loadId,
+      });
+
       // Redirect happens in useEffect
     } catch (err) {
       const msg =
