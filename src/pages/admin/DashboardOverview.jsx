@@ -172,7 +172,7 @@ export default function DashboardOverview() {
           <div>
             <h2 className="text-xl font-bold text-walnut-brown flex items-center gap-2">
               <HiOutlineClipboardList className="text-soft-sage" /> Recent
-              Customer Inquiries
+              Customer Orders
             </h2>
             <p className="text-xs text-charcoal-text/50 font-medium">
               Orders manually logged from client WhatsApp chats

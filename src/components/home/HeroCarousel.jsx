@@ -8,12 +8,14 @@ import {
   getProductInquiryLink,
   generateWhatsAppLink,
 } from "../../utils/whatsappLink";
+import LeadModal from "../common/LeadModal";
 
 const ROTATE_INTERVAL = 12000;
 
 export default function HeroCarousel({ products = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [leadModalOpen, setLeadModalOpen] = useState(false);
 
   useEffect(() => {
     if (products.length <= 1 || isPaused) return;
@@ -36,9 +38,12 @@ export default function HeroCarousel({ products = [] }) {
   const activeProduct = products[activeIndex];
   const imageUrl = activeProduct.images?.[0]?.url;
 
+  const baseMessage = activeProduct
+    ? decodeURIComponent(getProductInquiryLink(activeProduct).split("text=")[1])
+    : "";
+
   const handleInquiry = () => {
-    const link = getProductInquiryLink(activeProduct);
-    window.open(link, "_blank", "noopener,noreferrer");
+    setLeadModalOpen(true);
   };
 
   const handleGenericInquiry = () => {
@@ -50,14 +55,14 @@ export default function HeroCarousel({ products = [] }) {
 
   return (
     <section
-      className="relative overflow-hidden bg-walnut-brown text-warm-cream flex items-center py-10 sm:py-16 lg:py-0 lg:min-h-[calc(100vh-5rem)]"
+      className="relative bg-walnut-brown text-warm-cream flex items-center py-10 sm:py-16 lg:py-0 lg:min-h-[calc(100vh-5rem)]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-walnut-brown via-walnut-brown to-[#5f4132]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-walnut-brown via-walnut-brown to-[#5f4132] overflow-hidden" />
 
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] bg-size-[24px_24px]" />
+      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] bg-size-[24px_24px] pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-4">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -189,6 +194,16 @@ export default function HeroCarousel({ products = [] }) {
             </Link>
           </div>
         </div>
+      </div>
+
+      {/* Lead Modal with clean z-index portal layer */}
+      <div className="relative z-50">
+        <LeadModal
+          isOpen={leadModalOpen}
+          onClose={() => setLeadModalOpen(false)}
+          baseMessage={baseMessage}
+          product={activeProduct}
+        />
       </div>
     </section>
   );

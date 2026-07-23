@@ -83,7 +83,7 @@ export default function Contact() {
     {
       icon: FaMapMarkerAlt,
       title: "Showroom & Workshop",
-      content: "Huruma Corner, near Adams Arcade, Nairobi, Kenya",
+      content: "Huruma Corner, Nairobi, Kenya",
     },
     {
       icon: FaPhoneAlt,
