@@ -28,7 +28,7 @@ export default function Navbar() {
   return (
     <nav className="bg-warm-cream border-b border-walnut-brown/10 sticky top-0 z-40 backdrop-blur-md/90">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <div className="flex justify-between h-18">
+        <div className="flex justify-between h-18 lg:h-21">
           {/* Logo */}
           <div className="shrink-0 flex items-center">
             <Link to="/" className="flex items-center" aria-label="Gleamy home">
