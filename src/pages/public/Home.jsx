@@ -78,7 +78,7 @@ export default function Home() {
     {
       icon: FaHammer,
       title: "Expert Nairobi Carpentry",
-      desc: "Crafted by master carpenters at our Ngong Road workshop using seasoned hardwoods.",
+      desc: "Crafted by master carpenters at our Huruma Corner workshop using seasoned hardwoods.",
     },
     {
       icon: FaPalette,
@@ -137,7 +137,7 @@ export default function Home() {
 
           <p className="text-lg sm:text-xl text-warm-cream/80 max-w-2xl mx-auto font-medium leading-relaxed">
             From safety-first baby cots to custom wardrobes and living room
-            fittings. Built by hand on Ngong Road, Nairobi, Kenya.
+            fittings. Built by hand on Huruma Corner, Nairobi, Kenya.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">

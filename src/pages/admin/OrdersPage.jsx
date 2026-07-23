@@ -337,7 +337,7 @@ export default function OrdersPage() {
             <Input
               label="Delivery Location (Optional)"
               name="customerLocation"
-              placeholder="e.g. Ngong Road, Nairobi"
+              placeholder="e.g. Huruma Corner, Nairobi"
               value={formData.customerLocation}
               onChange={handleInputChange}
             />

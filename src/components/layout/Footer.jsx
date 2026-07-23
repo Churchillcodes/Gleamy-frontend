@@ -88,25 +88,25 @@ export default function Footer() {
                 <span>
                   Showroom & Workshop,
                   <br />
-                  Ngong Road, Nairobi, Kenya
+                  Huruma Corner, Nairobi, Kenya
                 </span>
               </li>
               <li className="flex items-center gap-2.5 min-w-0">
                 <FaPhoneAlt className="shrink-0 text-soft-sage" />
                 <a
-                  href="tel:+254719246761"
+                  href="tel:+254719748944"
                   className="hover:text-white transition-colors"
                 >
-                  +254 719 246761
+                  +254 719748944
                 </a>
               </li>
               <li className="flex items-center gap-2.5 min-w-0">
                 <FaEnvelope className="shrink-0 text-soft-sage" />
                 <a
-                  href="mailto:info@gleamyfurniture.co.ke"
+                  href="mailto:gleamycots@gmail.com"
                   className="hover:text-white transition-colors break-all"
                 >
-                  info@gleamyfurniture.co.ke
+                  gleamycots@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-2.5 min-w-0">

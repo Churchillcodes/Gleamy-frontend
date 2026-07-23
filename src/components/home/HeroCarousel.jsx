@@ -59,7 +59,7 @@ export default function HeroCarousel({ products = [] }) {
 
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FAF6F0_1px,transparent_1px)] bg-size-[24px_24px]" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-4">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* LEFT SIDE */}
           <div className="space-y-5 lg:space-y-4 text-center lg:text-left">
@@ -73,7 +73,7 @@ export default function HeroCarousel({ products = [] }) {
 
             <p className="text-lg sm:text-xl lg:text-lg xl:text-xl text-warm-cream/80 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
               From safety-first baby cots to custom wardrobes and living room
-              fittings. Built by hand on Ngong Road, Nairobi, Kenya.
+              fittings. Built by hand on Huruma Corner, Nairobi, Kenya.
             </p>
 
             {/* Active Product Info */}

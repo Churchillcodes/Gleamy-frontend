@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import Button from "./Button";
 import Input from "./Input";
@@ -6,11 +6,28 @@ import { generateWhatsAppLink } from "../../utils/whatsappLink";
 import { FaWhatsapp } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { leadApi } from "../../api/leadApi";
+import {
+  saveCustomerDetails,
+  loadCustomerDetails,
+  clearCustomerDetails,
+} from "../../utils/customerStorage";
 
 export default function LeadModal({ isOpen, onClose, baseMessage, product }) {
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [source, setSource] = useState("Instagram");
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const saved = loadCustomerDetails();
+
+    if (saved) {
+      setCustomerName(saved.customerName);
+      setCustomerPhone(saved.customerPhone);
+    }
+  }, [isOpen]);
+
   const [otherText, setOtherText] = useState("");
   const [error, setError] = useState("");
 
@@ -19,7 +36,7 @@ export default function LeadModal({ isOpen, onClose, baseMessage, product }) {
     "Facebook",
     "Google Search",
     "Friend / Recommendation",
-    "Ngong Road Showroom",
+    "Huruma Corner Showroom",
     "Other",
   ];
 
@@ -63,11 +80,14 @@ export default function LeadModal({ isOpen, onClose, baseMessage, product }) {
 
       window.open(link, "_blank", "noopener,noreferrer");
 
+      saveCustomerDetails({
+        customerName,
+        customerPhone,
+      });
       toast.success("Redirecting to WhatsApp...");
 
-      setCustomerName("");
-      setCustomerPhone("");
       setOtherText("");
+      setSource("Instagram");
 
       onClose();
     } catch (err) {
@@ -107,7 +127,8 @@ export default function LeadModal({ isOpen, onClose, baseMessage, product }) {
         </p>
 
         <p className="text-xs text-charcoal-text/60">
-          You'll be redirected to WhatsApp immediately after submitting.
+          We'll remember your name and phone number on this device for 30 days
+          so future inquiries are quicker. You can remove them anytime below.
         </p>
 
         <Input
@@ -184,6 +205,20 @@ export default function LeadModal({ isOpen, onClose, baseMessage, product }) {
             {error}
           </p>
         )}
+        <div className="pt-2 text-center">
+          <button
+            type="button"
+            onClick={() => {
+              clearCustomerDetails();
+              setCustomerName("");
+              setCustomerPhone("");
+              toast.success("Saved details removed.");
+            }}
+            className="text-xs text-walnut-brown/60 hover:text-walnut-brown underline transition-colors"
+          >
+            Clear saved name & phone
+          </button>
+        </div>
       </div>
     </Modal>
   );

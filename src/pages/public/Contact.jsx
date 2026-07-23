@@ -83,24 +83,24 @@ export default function Contact() {
     {
       icon: FaMapMarkerAlt,
       title: "Showroom & Workshop",
-      content: "Ngong Road, near Adams Arcade, Nairobi, Kenya",
+      content: "Huruma Corner, near Adams Arcade, Nairobi, Kenya",
     },
     {
       icon: FaPhoneAlt,
       title: "Call Support",
-      content: "+254 719 246761",
-      href: "tel:+254719246761",
+      content: "+254 719748944",
+      href: "tel:+254719748944",
     },
     {
       icon: FaEnvelope,
       title: "Email Address",
-      content: "info@gleamyfurniture.co.ke",
-      href: "mailto:info@gleamyfurniture.co.ke",
+      content: "gleamycots@gmail.com",
+      href: "mailto:gleamycots@gmail.com",
     },
     {
       icon: FaClock,
       title: "Business Hours",
-      content: "Monday - Saturday: 8:00 AM - 6:00 PM (Closed Sundays)",
+      content: "Monday - Saturday: 8:00 AM - 7:00 PM (Closed Sundays)",
     },
   ];
 
@@ -169,7 +169,7 @@ export default function Contact() {
               to chat directly with Naomi and Ivan about available models.
             </p>
             <a
-              href={`https://wa.me/254719246761`}
+              href={`https://wa.me/254719748944`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-whatsapp-green hover:bg-whatsapp-green/95 text-white font-bold rounded-xl text-xs shadow-md transition-all active:scale-98"
@@ -199,7 +199,7 @@ export default function Contact() {
             <Input
               label="Kenyan Phone Number"
               name="phone"
-              placeholder="e.g. 0719246761"
+              placeholder="e.g. 0719748944"
               value={formData.phone}
               onChange={handleChange}
               error={errors.phone}
