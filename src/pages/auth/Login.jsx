@@ -69,17 +69,6 @@ export default function Login() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-warm-cream flex flex-col items-center justify-center">
-        <div className="w-10 h-10 border-4 border-soft-sage border-t-walnut-brown rounded-full animate-spin"></div>
-        <p className="mt-3 text-sm font-semibold text-walnut-brown uppercase tracking-wider">
-          Verifying session...
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-warm-cream flex flex-col items-center justify-center p-4">
       {/* Return to website */}
