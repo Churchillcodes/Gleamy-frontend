@@ -41,7 +41,7 @@ export const productApi = {
   },
 
   restoreProduct: async (id) => {
-    const response = await axiosInstance.patch(`/products/${id}/restore`);
+    const response = await axiosInstance.patch(`/products/${id}/reactivate`);
     return response.data.product;
   },
 
