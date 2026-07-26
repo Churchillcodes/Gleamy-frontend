@@ -42,7 +42,7 @@ export const productApi = {
 
   restoreProduct: async (id) => {
     const response = await axiosInstance.patch(
-      `/products/${id}/restore`,
+      `/products/${id}/reactivate`,
       {},
       { headers: { "Content-Type": "application/json" } },
     );
