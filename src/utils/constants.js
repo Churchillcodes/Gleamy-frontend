@@ -9,6 +9,14 @@ export const CATEGORIES = [
   "Living Room Furniture",
 ];
 
+export const PRODUCT_TYPES = {
+  "Baby Furniture": ["Baby Cot"],
+
+  "Storage Furniture": ["Chest of Drawers", "Wardrobe", "Cabinet", "Shoe rack"],
+
+  "Living Room Furniture": ["TV Stand", "Coffee Table", "Entertainment Unit"],
+};
+
 export const ORDER_STATUSES = [
   "Pending",
   "Confirmed",

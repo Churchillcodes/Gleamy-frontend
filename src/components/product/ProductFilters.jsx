@@ -1,16 +1,17 @@
-import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { CATEGORIES } from '../../utils/constants';
-import Input from '../common/Input';
-import Button from '../common/Button';
+import React from "react";
+import { useSearchParams } from "react-router-dom";
+import { CATEGORIES, PRODUCT_TYPES } from "../../utils/constants";
+import Input from "../common/Input";
+import Button from "../common/Button";
 
 export default function ProductFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const search = searchParams.get('search') || '';
-  const category = searchParams.get('category') || '';
-  const type = searchParams.get('type') || ''; // 'inventory' | 'custom' | ''
-  const sortBy = searchParams.get('sortBy') || 'featured';
+  const search = searchParams.get("search") || "";
+  const category = searchParams.get("category") || "";
+  const productType = searchParams.get("productType") || "";
+  const type = searchParams.get("type") || ""; // 'inventory' | 'custom' | ''
+  const sortBy = searchParams.get("sortBy") || "featured";
 
   const updateParam = (key, value) => {
     const newParams = new URLSearchParams(searchParams);
@@ -27,35 +28,46 @@ export default function ProductFilters() {
   };
 
   const categoryOptions = [
-    { label: 'All Categories', value: '' },
+    { label: "All Categories", value: "" },
     ...CATEGORIES.map((cat) => ({ label: cat, value: cat })),
   ];
 
+  const productTypeOptions = [
+    { label: "All Product Types", value: "" },
+    ...(category
+      ? PRODUCT_TYPES[category] || []
+      : Object.values(PRODUCT_TYPES).flat()
+    ).map((type) => ({
+      label: type,
+      value: type,
+    })),
+  ];
+
   const typeOptions = [
-    { label: 'All Order Types', value: '' },
-    { label: 'In-Stock Inventory', value: 'inventory' },
-    { label: 'Made to Order', value: 'custom' },
+    { label: "All Order Types", value: "" },
+    { label: "In-Stock Inventory", value: "inventory" },
+    { label: "Made to Order", value: "custom" },
   ];
 
   const sortOptions = [
-    { label: 'Featured', value: 'featured' },
-    { label: 'Price: Low to High', value: 'price_asc' },
-    { label: 'Price: High to Low', value: 'price_desc' },
-    { label: 'Name: A to Z', value: 'name_asc' },
-    { label: 'Name: Z to A', value: 'name_desc' },
+    { label: "Featured", value: "featured" },
+    { label: "Price: Low to High", value: "price_asc" },
+    { label: "Price: High to Low", value: "price_desc" },
+    { label: "Name: A to Z", value: "name_asc" },
+    { label: "Name: Z to A", value: "name_desc" },
   ];
 
-  const isFiltered = search || category || type || sortBy !== 'featured';
+  const isFiltered =
+    search || category || productType || type || sortBy !== "featured";
 
   return (
     <div className="bg-white p-5 rounded-2xl border border-walnut-brown/10 shadow-xs space-y-4 mb-8">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
         {/* Search */}
         <Input
           placeholder="Search cots, wardrobes, tables..."
           value={search}
-          onChange={(e) => updateParam('search', e.target.value)}
+          onChange={(e) => updateParam("search", e.target.value)}
           label="Search Products"
         />
 
@@ -63,16 +75,24 @@ export default function ProductFilters() {
         <Input
           type="select"
           value={category}
-          onChange={(e) => updateParam('category', e.target.value)}
+          onChange={(e) => updateParam("category", e.target.value)}
           options={categoryOptions}
           label="Category"
+        />
+
+        <Input
+          type="select"
+          label="Product Type"
+          value={productType}
+          onChange={(e) => updateParam("productType", e.target.value)}
+          options={productTypeOptions}
         />
 
         {/* Type select */}
         <Input
           type="select"
           value={type}
-          onChange={(e) => updateParam('type', e.target.value)}
+          onChange={(e) => updateParam("type", e.target.value)}
           options={typeOptions}
           label="Availability Type"
         />
@@ -81,11 +101,10 @@ export default function ProductFilters() {
         <Input
           type="select"
           value={sortBy}
-          onChange={(e) => updateParam('sortBy', e.target.value)}
+          onChange={(e) => updateParam("sortBy", e.target.value)}
           options={sortOptions}
           label="Sort By"
         />
-
       </div>
 
       {isFiltered && (

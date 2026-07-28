@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { productApi } from "../../api/productApi";
-import { CATEGORIES } from "../../utils/constants";
+import { CATEGORIES, PRODUCT_TYPES } from "../../utils/constants";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import Modal from "../../components/common/Modal";
@@ -35,6 +35,7 @@ export default function ProductsPage() {
   const [formData, setFormData] = useState({
     name: "",
     category: CATEGORIES[0],
+    productType: PRODUCT_TYPES[CATEGORIES[0]][0],
     description: "",
     listedPrice: "",
     negotiable: true,
@@ -72,10 +73,18 @@ export default function ProductsPage() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      };
+
+      if (name === "category") {
+        updated.productType = PRODUCT_TYPES[value][0];
+      }
+
+      return updated;
+    });
     if (formErrors[name]) {
       setFormErrors((prev) => ({ ...prev, [name]: null }));
     }
@@ -86,6 +95,7 @@ export default function ProductsPage() {
     setFormData({
       name: "",
       category: CATEGORIES[0],
+      productType: PRODUCT_TYPES[CATEGORIES[0]][0],
       description: "",
       listedPrice: "",
       negotiable: true,
@@ -105,6 +115,8 @@ export default function ProductsPage() {
     setFormData({
       name: product.name,
       category: product.category,
+      productType:
+        product.productType || PRODUCT_TYPES[product.category]?.[0] || "",
       description: product.description,
       listedPrice: product.listedPrice,
       negotiable: product.negotiable ?? true,
@@ -222,6 +234,7 @@ export default function ProductsPage() {
     const payload = {
       name: formData.name.trim(),
       category: formData.category,
+      productType: formData.productType,
       description: formData.description.trim(),
       listedPrice: Number(formData.listedPrice),
       negotiable: formData.isMadeToOrder ? false : formData.negotiable,
@@ -380,6 +393,9 @@ export default function ProductsPage() {
                       <Badge variant="walnut" size="sm">
                         {p.category}
                       </Badge>
+                      <Badge variant="outline" size="sm">
+                        {p.productType}
+                      </Badge>
                       {p.isMadeToOrder ? (
                         <Badge variant="sage" size="sm">
                           Made to Order
@@ -511,14 +527,32 @@ export default function ProductsPage() {
               required
             />
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <Input
                 type="select"
                 label="Category"
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-                options={CATEGORIES.map((c) => ({ label: c, value: c }))}
+                options={CATEGORIES.map((c) => ({
+                  label: c,
+                  value: c,
+                }))}
+                required
+              />
+
+              <Input
+                type="select"
+                label="Product Type"
+                name="productType"
+                value={formData.productType}
+                onChange={handleInputChange}
+                options={(PRODUCT_TYPES[formData.category] || []).map(
+                  (type) => ({
+                    label: type,
+                    value: type,
+                  }),
+                )}
                 required
               />
 
