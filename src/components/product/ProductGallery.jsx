@@ -49,7 +49,7 @@ export default function ProductGallery({ images = [], productName }) {
         <img
           src={activeImage.url}
           alt={`${productName} - Preview`}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-101"
+          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-101"
         />
 
         {images.length > 1 && (

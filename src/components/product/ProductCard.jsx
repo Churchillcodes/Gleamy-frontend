@@ -44,7 +44,7 @@ export default function ProductCard({ product }) {
               src={imageUrl}
               alt={name}
               loading="lazy"
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center text-walnut-brown/30 p-4">
