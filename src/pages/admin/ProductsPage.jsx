@@ -619,7 +619,7 @@ export default function ProductsPage() {
 
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-walnut-brown tracking-wide block">
-                Dimensions (cm, Optional)
+                Dimensions (Inches, Optional)
               </label>
               <div className="grid grid-cols-3 gap-2">
                 <Input
