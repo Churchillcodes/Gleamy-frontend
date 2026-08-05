@@ -196,11 +196,8 @@ export default function ProductDetails() {
                 <FaRulerCombined /> Dimensions (L &times; W &times; H)
               </span>
               <p className="text-xs sm:text-sm font-semibold text-charcoal-text mt-1">
-                {dimensions &&
-                dimensions.length &&
-                dimensions.width &&
-                dimensions.height
-                  ? `${dimensions.length}cm × ${dimensions.width}cm × ${dimensions.height}cm`
+                {dimensions?.length && dimensions?.width && dimensions?.height
+                  ? `${dimensions.length}" × ${dimensions.width}" × ${dimensions.height}"`
                   : "Custom sizes available upon request"}
               </p>
             </div>

@@ -88,8 +88,8 @@ export default function Contact() {
     {
       icon: FaPhoneAlt,
       title: "Call Support",
-      content: "+254 719748944",
-      href: "tel:+254719748944",
+      content: "+254 719748944/+254 748667273",
+      href: "tel:+254 719748944",
     },
     {
       icon: FaEnvelope,
