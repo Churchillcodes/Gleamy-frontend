@@ -19,8 +19,8 @@ export default function ImageUploader({
     if (!files || files.length === 0) return;
 
     // Total count validation
-    if (images.length + files.length > 12) {
-      toast.error("You can upload a maximum of 12 images per product.");
+    if (images.length + files.length > 60) {
+      toast.error("You can upload a maximum of 60 images per product.");
       return;
     }
 
@@ -109,7 +109,7 @@ export default function ImageUploader({
   return (
     <div className="space-y-4">
       <label className="text-xs font-semibold text-walnut-brown tracking-wide block">
-        Product Images ({images.length} / 12)
+        Product Images ({images.length} / 60)
       </label>
 
       {/* Grid of uploaded images */}
@@ -139,7 +139,7 @@ export default function ImageUploader({
         ))}
 
         {/* Upload box */}
-        {images.length < 12 && (
+        {images.length < 60 && (
           <div
             onDragOver={onDragOver}
             onDragLeave={onDragLeave}
